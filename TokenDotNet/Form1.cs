@@ -1,0 +1,464 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Newtonsoft.Json; 
+
+namespace TokenDotNet
+{
+    public partial class MainForm : Form
+    {
+
+        private Basket basket;
+        private AndroidCommunication androidCommunication = Program.androidCommunication;
+
+        public int serialInCallback(int type, string value)
+        {
+            Control.CheckForIllegalCrossThreadCalls = false;
+            tbConsole.AppendText(value);
+
+            if(type == 3)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                ReceiptInfo receiptInfo = constructReceiptInfoFromJson(value);
+                string message = "";
+                if (receiptInfo.status == 0)
+                {
+                    message = "Ödeme başarılı!";
+                    clearBasket();
+                }
+                else
+                {
+                    message = "Ödeme başarısız";
+                }
+                string caption = "Ödeme bilgisi alındı";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+
+            return 1;
+        }
+
+        public void deviceStateCallback(bool isConnected, string id)
+        {
+
+            Control.CheckForIllegalCrossThreadCalls = false;
+            if (isConnected)
+            {
+                tbAvInfo.Text = id;
+            }
+            else
+            {
+                tbAvInfo.Text = "Bağlı cihaz yok!";
+            }
+        }
+
+        private FiscalInfo constructFiscalInfoFromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<FiscalInfo>(json);
+        }
+        private ReceiptInfo constructReceiptInfoFromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<ReceiptInfo>(json);
+        }
+
+        private string constructJsonFromBasket(Basket basket)
+        {
+            return JsonConvert.SerializeObject(basket, Formatting.Indented);
+        }
+
+        private void updateConsole(string update)
+        {
+            tbConsole.AppendText(update);
+        }
+
+        private void updateBasketView()
+        {
+            lbBasket.Items.Clear();
+            foreach (Item item in basket.items)
+            {
+                lbBasket.Items.Add(item);
+            }
+
+            lbPrice.Text = $"{basket.calculatePrice() / 100}TL";
+            lbPaymentPlan.Text = basket.paymentItems.Count == 0 ? "Yok" : "Var";
+            lbCustomer.Text = basket.customerInfo == null ? "Yok" : basket.customerInfo.name;
+            lbDiscount.Text = basket.adjust == null ? "Yok" : "Var";
+        }
+
+        private void clearBasket()
+        {
+            basket = new Basket();
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void sendBasketWithPopup()
+        {
+            int basketStatus = androidCommunication.sendBasket(constructJsonFromBasket(basket));
+
+            //POS bağlantısı var
+            if (basketStatus == 1)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Sepet POS cihazına gönderildi.";
+                string caption = "Sepet Gönderildi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+
+            //POS Bağlantısı yok
+            if (basketStatus == 0)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlantısı bulunamadı, gönderdiğiniz sepet sıraya eklendi bağlantı sağlandığında gönderilecek.";
+                string caption = "Sepet Sıraya Eklendi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+        }
+
+        private Item castPlusToItem(Plus plus)
+        {
+            return (new Item
+            {
+                barcode = plus.barcode,
+                name = plus.name,
+                pluNo = plus.pluNo,
+                price = plus.price,
+                sectionNo = plus.sectionNo,
+                taxPercent = plus.taxPercent,
+                type = plus.type,
+                unit = plus.unit,
+                vatID = plus.vatID,
+                limit = 0,
+                quantity = 1000,
+                paymentType = 0
+            });
+        }
+
+        //asenkronla alakalı sorular
+        private void setUpCallbacks()
+        {
+            androidCommunication.setDeviceStateCallback(deviceStateCallback);
+            androidCommunication.setSerialInCallback(serialInCallback);
+        }
+
+        public MainForm()
+        {
+            InitializeComponent();
+
+            Thread thread = new Thread(setUpCallbacks);
+            thread.Start();
+
+            basket = new Basket();
+            basket.basketID = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
+            basket.createInvoice = false;
+            basket.documentType = 0;
+            basket.isVoid = false;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+ 
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string fiscalInfo = androidCommunication.getFiscalInfo();
+            updateConsole(fiscalInfo);
+
+            lbFiscal.DisplayMember = "name";
+            lbSavedItems.DisplayMember = "name";
+
+            FiscalInfo fiscalinfoObj = constructFiscalInfoFromJson(fiscalInfo);
+
+            lbFiscal.Items.Clear();
+            lbSavedItems.Items.Clear();
+
+            foreach(Section section in fiscalinfoObj.sections)
+            {
+                lbFiscal.Items.Add(section);
+            }
+
+            foreach (Plus item in fiscalinfoObj.plus)
+            {
+                lbSavedItems.Items.Add(item);
+            }
+
+        }
+
+        //pos takılı ama hızlı sepet kapalıyken blockluyor programı
+        private void button3_Click(object sender, EventArgs e)
+        {
+            sendBasketWithPopup();
+        }
+
+        private void sendCash_Click(object sender, EventArgs e)
+        {
+            basket.paymentItems.Add(new PaymentItem
+            {
+                amount = basket.calculatePrice(),
+                description = "Tum tutarı nakit olarak odet",
+                taxRate = 5,
+                type = 1
+            });
+            
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+
+            sendBasketWithPopup();
+        }
+
+        private void sendCard_Click(object sender, EventArgs e)
+        {
+            basket.paymentItems.Add(new PaymentItem
+            {
+                amount = basket.calculatePrice(),
+                description = "Tum tutari kart olarak odet",
+                taxRate = 5,
+                type = 3
+            });
+
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+
+            sendBasketWithPopup();
+        }
+
+        private void addCustomer_Click(object sender, EventArgs e)
+        {
+            basket.customerInfo = new CustomerInfo
+            {
+                buildingName = "Building B",
+                buildingNumber = "202",
+                cityName = "City Y",
+                citySubdivisonName = "Subdivision 2",
+                country = "Country B",
+                email = "customer2@example.com",
+                isLock = false,
+                name = "Ege Yardımcı",
+                postalZone = "67890",
+                region = "Region Y",
+                room = "20",
+                street = "Street B",
+                taxID = "0987654321",
+                taxScheme = "Scheme B",
+                telefax = "654321",
+                telephone = "0123456789"
+            };
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void removeCustomer_Click(object sender, EventArgs e)
+        {
+            basket.customerInfo = null;
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void addPaymentPlan_Click(object sender, EventArgs e)
+        {
+            basket.paymentItems.Add(new PaymentItem
+            {
+                description = "yarısı nakit",
+                amount = basket.calculatePrice()/2,
+                type = 1,
+                taxRate = 5
+            });
+
+            basket.paymentItems.Add(new PaymentItem
+            {
+                description = "yarısı kredi kartı",
+                amount = basket.calculatePrice()/2,
+                type = 3,
+                taxRate = 5
+            });
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void removePaymentPlan_Click(object sender, EventArgs e)
+        {
+            basket.paymentItems = new List<PaymentItem>();
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void addDiscount_Click(object sender, EventArgs e)
+        {
+            basket.adjust = new Adjust
+            {
+                description = "20 tl indirim",
+                discountOrSurcharge = 0,
+                type = 0,
+                value = 2000
+            };
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void addSurcharge_Click(object sender, EventArgs e)
+        {
+            basket.adjust = new Adjust
+            {
+                description = "yüzde 20 arttırım",
+                discountOrSurcharge = 1,
+                type = 1,
+                value = 2000
+            };
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void removeDiscount_Click(object sender, EventArgs e)
+        {
+            basket.adjust = null;
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void addAppleToBasket_Click(object sender, EventArgs e)
+        {
+            basket.items.Add(new Item
+            {
+                barcode = "",
+                name = "Su",
+                pluNo = 0,
+                price = 500,
+                sectionNo = 1,
+                taxPercent = 1000,
+                type = 0,
+                unit = "Adet",
+                vatID = 0,
+                limit = 0,
+                quantity = 1000,
+                paymentType = 0
+            });
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void addPearToBasket_Click(object sender, EventArgs e)
+        {
+            basket.items.Add(new Item
+            {
+                barcode = "",
+                name = "Armut",
+                pluNo = 0,
+                price = 1500,
+                sectionNo = 1,
+                taxPercent = 1000,
+                type = 0,
+                unit = "Adet",
+                vatID = 0,
+                limit = 0,
+                quantity = 1000,
+                paymentType = 0
+            });
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void deleteLastItemInBasket_Click(object sender, EventArgs e)
+        {
+            List<Item> itemList = new List<Item> { };
+            for(int i = 0; i < basket.items.Count-1; i++)
+            {
+                itemList.Add(basket.items[i]);
+            }
+
+            basket.items = itemList;
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void emptyBasket_Click(object sender, EventArgs e)
+        {
+            basket = new Basket();
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            Section section = lbFiscal.SelectedItem as Section;
+
+            basket.items.Add(new Item
+            {
+                barcode = "",
+                name = section.name,
+                pluNo = 0,
+                price = int.Parse(tbItemPrice.Text)*100,
+                sectionNo = section.sectionNo,
+                taxPercent = 1000,
+                type = 0,
+                unit = "Adet",
+                vatID = 0,
+                limit = 0,
+                quantity = 1000,
+                paymentType = 0
+            });
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Item item = castPlusToItem((Plus)lbSavedItems.SelectedItem);
+            basket.items.Add(item);
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void removeSelectedFromBasket_Click(object sender, EventArgs e)
+        {
+            basket.items.RemoveAt(lbBasket.SelectedIndex);
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+        }
+
+        private void clearConsole(object sender, MouseEventArgs e)
+        {
+            tbConsole.Clear();
+        }
+    }
+}

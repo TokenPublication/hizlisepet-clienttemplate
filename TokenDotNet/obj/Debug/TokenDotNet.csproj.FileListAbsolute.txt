@@ -1,0 +1,14 @@
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\bin\Debug\TokenDotNet.exe.config
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\bin\Debug\TokenDotNet.exe
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\bin\Debug\TokenDotNet.pdb
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.csproj.AssemblyReference.cache
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.csproj.SuggestedBindingRedirects.cache
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.Properties.Resources.resources
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.csproj.GenerateResource.cache
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.csproj.CoreCompileInputs.cache
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.exe
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.pdb
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.MainForm.resources
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\bin\Debug\Newtonsoft.Json.dll
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\bin\Debug\Newtonsoft.Json.xml
+C:\Users\egeya\source\repos\TokenDotNet\TokenDotNet\obj\Debug\TokenDotNet.csproj.CopyComplete
