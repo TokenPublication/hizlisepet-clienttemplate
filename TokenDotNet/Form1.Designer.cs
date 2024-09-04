@@ -211,6 +211,7 @@
             this.addWaterToBasket.TabIndex = 14;
             this.addWaterToBasket.Text = "Su ekle";
             this.addWaterToBasket.UseVisualStyleBackColor = true;
+            this.addWaterToBasket.Visible = false;
             this.addWaterToBasket.Click += new System.EventHandler(this.addAppleToBasket_Click);
             // 
             // addPearToBasket
@@ -221,6 +222,7 @@
             this.addPearToBasket.TabIndex = 15;
             this.addPearToBasket.Text = "Armut ekle";
             this.addPearToBasket.UseVisualStyleBackColor = true;
+            this.addPearToBasket.Visible = false;
             this.addPearToBasket.Click += new System.EventHandler(this.addPearToBasket_Click);
             // 
             // deleteLastItemInBasket

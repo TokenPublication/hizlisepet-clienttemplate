@@ -167,7 +167,6 @@ namespace TokenDotNet
             });
         }
 
-        //asenkronla alakalı sorular
         private void setUpCallbacks()
         {
             androidCommunication.setDeviceStateCallback(deviceStateCallback);
@@ -283,6 +282,7 @@ namespace TokenDotNet
                 telefax = "654321",
                 telephone = "0123456789"
             };
+            basket.documentType = 2;
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
         }
@@ -381,7 +381,7 @@ namespace TokenDotNet
             basket.items.Add(new Item
             {
                 barcode = "",
-                name = "Armut",
+                name = "Armut Ülker",
                 pluNo = 0,
                 price = 1500,
                 sectionNo = 1,

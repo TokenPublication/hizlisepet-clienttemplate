@@ -18,7 +18,7 @@ namespace TokenDotNet
 
         //Delete the heap allocated C++ androidCommunication object to free resources
         [DllImport("HizliSepetSerial.dll")]
-        private static extern IntPtr c_deleteAndroidCommunication(IntPtr androidCommunicationPtr);
+        private static extern void c_deleteAndroidCommunication(IntPtr androidCommunicationPtr);
 
         [DllImport("HizliSepetSerial.dll")]
         private static extern int c_sendBasket(IntPtr androidCommunicationPtr, string jsonData);
