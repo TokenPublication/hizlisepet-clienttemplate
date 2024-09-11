@@ -429,7 +429,7 @@ namespace TokenDotNet
                 pluNo = 0,
                 price = int.Parse(tbItemPrice.Text)*100,
                 sectionNo = section.sectionNo,
-                taxPercent = 1000,
+                taxPercent = section.taxPercent,
                 type = 0,
                 unit = "Adet",
                 vatID = 0,
