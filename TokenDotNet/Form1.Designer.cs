@@ -66,6 +66,7 @@
             this.lbDiscount = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lbVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -427,11 +428,21 @@
             this.pictureBox1.TabIndex = 39;
             this.pictureBox1.TabStop = false;
             // 
+            // lbVersion
+            // 
+            this.lbVersion.AutoSize = true;
+            this.lbVersion.Location = new System.Drawing.Point(213, 13);
+            this.lbVersion.Name = "lbVersion";
+            this.lbVersion.Size = new System.Drawing.Size(63, 16);
+            this.lbVersion.TabIndex = 40;
+            this.lbVersion.Text = "Version =";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbDiscount);
             this.Controls.Add(this.label6);
@@ -518,6 +529,7 @@
         private System.Windows.Forms.Label lbDiscount;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbVersion;
     }
 }
 

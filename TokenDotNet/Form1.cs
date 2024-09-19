@@ -185,6 +185,8 @@ namespace TokenDotNet
             basket.createInvoice = false;
             basket.documentType = 0;
             basket.isVoid = false;
+
+            lbVersion.Text = Program.version;
         }
 
         private void Form1_Load(object sender, EventArgs e)

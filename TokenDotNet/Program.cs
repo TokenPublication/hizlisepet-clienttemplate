@@ -12,6 +12,7 @@ namespace TokenDotNet
         /// The main entry point for the application.
         /// </summary>
         /// 
+        public static string version = "Version = 1.0.0";
 
         public static AndroidCommunication androidCommunication = AndroidCommunication.Instance;
 
