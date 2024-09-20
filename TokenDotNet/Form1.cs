@@ -109,6 +109,41 @@ namespace TokenDotNet
 
         private void sendBasketWithPopup()
         {
+
+            if (basket.items.Count == 0)
+            {
+                {
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    string message = "Sepet boş gönderilemez!";
+                    string caption = "Sepet Gönderilemedi";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
+
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }
+                }
+                return;
+            }
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Sepet POS cihazına gönderildi.";
+                string caption = "Sepet Gönderildi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
             int basketStatus = androidCommunication.sendBasket(constructJsonFromBasket(basket));
 
             //POS bağlantısı var
