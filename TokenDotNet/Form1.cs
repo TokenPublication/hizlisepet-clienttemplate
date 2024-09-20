@@ -477,7 +477,44 @@ namespace TokenDotNet
 
         private void button3_Click_1(object sender, EventArgs e)
         {
+            
+            if(tbItemPrice.Text == "")
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Lütfen ürün fiyatı giriniz!";
+                string caption = "Sepete eklenemedi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }   
+
             Section section = lbFiscal.SelectedItem as Section;
+
+            if(section == null)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Lütfen eklemek istediğiniz kısımı giriniz!";
+                string caption = "Sepet Gönderilemedi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
 
             basket.items.Add(new Item
             {
@@ -500,14 +537,51 @@ namespace TokenDotNet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Item item = castPlusToItem((Plus)lbSavedItems.SelectedItem);
-            basket.items.Add(item);
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
+            if ((Plus)lbSavedItems.SelectedItem != null)
+            {
+                Item item = castPlusToItem((Plus)lbSavedItems.SelectedItem);
+                basket.items.Add(item);
+                updateConsole(constructJsonFromBasket(basket));
+                updateBasketView();
+            }
+            else
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Lüften eklemek istediğiniz ürünü seçip tekrar deneyin!";
+                string caption = "Sepete eklenemedi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+            return;
         }
 
         private void removeSelectedFromBasket_Click(object sender, EventArgs e)
         {
+            if(lbBasket.SelectedIndex == -1)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Lütfen bir ürün seçiniz!";
+                string caption = "İşlem yapılamadı";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
             basket.items.RemoveAt(lbBasket.SelectedIndex);
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
