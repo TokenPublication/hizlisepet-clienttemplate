@@ -346,6 +346,7 @@ namespace TokenDotNet
 
         private void removeCustomer_Click(object sender, EventArgs e)
         {
+            basket.documentType = 0;
             basket.customerInfo = null;
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
