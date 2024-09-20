@@ -17,6 +17,7 @@ namespace TokenDotNet
 
         private Basket basket;
         private AndroidCommunication androidCommunication = Program.androidCommunication;
+        private bool isDeviceConnceted = false;
 
         public int serialInCallback(int type, string value)
         {
@@ -60,9 +61,11 @@ namespace TokenDotNet
             if (isConnected)
             {
                 tbAvInfo.Text = id;
+                isDeviceConnceted = true;
             }
             else
             {
+                isDeviceConnceted = false;
                 tbAvInfo.Text = "Bağlı cihaz yok!";
             }
         }
@@ -237,6 +240,23 @@ namespace TokenDotNet
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (!isDeviceConnceted)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
             string fiscalInfo = androidCommunication.getFiscalInfo();
             updateConsole(fiscalInfo);
 
