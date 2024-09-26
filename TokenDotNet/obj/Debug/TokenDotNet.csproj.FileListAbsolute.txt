@@ -25,3 +25,5 @@ C:\Users\25200397\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Debug\T
 C:\Users\25200397\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Debug\TokenDot.1F6FC7B5.Up2Date
 C:\Users\25200397\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Debug\TokenDotNet.exe
 C:\Users\25200397\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Debug\TokenDotNet.pdb
+C:\Users\25200397\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Debug\IntegrationHub.dll
+C:\Users\25200397\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Debug\IntegrationHub.pdb

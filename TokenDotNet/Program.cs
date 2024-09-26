@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IntegrationHub;
 
 namespace TokenDotNet
 {
@@ -13,8 +14,9 @@ namespace TokenDotNet
         /// </summary>
         /// 
         public static string version = "Version = 1.0.0";
-
-        public static AndroidCommunication androidCommunication = AndroidCommunication.Instance;
+        
+        
+        public static IntegrationHub.POSCommunication communication = IntegrationHub.POSCommunication.Instance;
 
         [STAThread]
         static void Main()

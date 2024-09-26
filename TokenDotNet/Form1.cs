@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
+using IntegrationHub;
+using static System.Collections.Specialized.BitVector32;
 
 namespace TokenDotNet
 {
@@ -16,7 +18,7 @@ namespace TokenDotNet
     {
 
         private Basket basket;
-        private AndroidCommunication androidCommunication = Program.androidCommunication;
+        private IntegrationHub.POSCommunication communication = Program.communication;
         private bool isDeviceConnceted = false;
 
         public int serialInCallback(int type, string value)
@@ -27,27 +29,34 @@ namespace TokenDotNet
             if(type == 3)
             {
                 // Initializes the variables to pass to the MessageBox.Show method.
-                ReceiptInfo receiptInfo = constructReceiptInfoFromJson(value);
-                string message = "";
-                if (receiptInfo.status == 0)
+                try
                 {
-                    message = "Ödeme başarılı!";
-                    clearBasket();
-                }
-                else
-                {
-                    message = "Ödeme başarısız";
-                }
-                string caption = "Ödeme bilgisi alındı";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
+                    ReceiptInfo receiptInfo = constructReceiptInfoFromJson(value);
+                    string message = "";
+                    if (receiptInfo.status == 0)
+                    {
+                        message = "Ödeme başarılı!";
+                        clearBasket();
+                    }
+                    else
+                    {
+                        message = "Ödeme başarısız";
+                    }
+                    string caption = "Ödeme bilgisi alındı";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
 
-                // Displays the MessageBox.
-                result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }
+                }
+                catch
                 {
-                    // Closes the parent form.
-                    this.Close();
+                    Console.WriteLine("ERROR");
                 }
             }
 
@@ -97,7 +106,7 @@ namespace TokenDotNet
                 lbBasket.Items.Add(item);
             }
 
-            lbPrice.Text = $"{basket.calculatePrice() / 100}TL";
+            lbPrice.Text = $"{realPriceToDisplayPrice(basket.calculatePrice())}TL";
             lbPaymentPlan.Text = basket.paymentItems.Count == 0 ? "Yok" : "Var";
             lbCustomer.Text = basket.customerInfo == null ? "Yok" : basket.customerInfo.name;
             lbDiscount.Text = basket.adjust == null ? "Yok" : "Var";
@@ -112,7 +121,47 @@ namespace TokenDotNet
 
         private void sendBasketWithPopup()
         {
+            //IF DEVICE IS NOT CONNECTED
+            if (!isDeviceConnceted)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
 
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
+
+            //IF TOTAL PRICE IS 0 DON'T SEND BASKET
+            if (basket.calculatePrice() <= 0)
+            {
+                {
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    string message = "Sepet tutarı sıfır veya sıfırdan küçük olamaz!";
+                    string caption = "Sepet Gönderilemedi";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
+
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }
+                }
+                return;
+            }
+
+            //IF BASKET IS EMPTY DON'T SEND BASKET
             if (basket.items.Count == 0)
             {
                 {
@@ -132,24 +181,9 @@ namespace TokenDotNet
                 }
                 return;
             }
-            {
-                // Initializes the variables to pass to the MessageBox.Show method.
-                string message = "Sepet POS cihazına gönderildi.";
-                string caption = "Sepet Gönderildi";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
+            int basketStatus = communication.sendBasket(constructJsonFromBasket(basket));
 
-                // Displays the MessageBox.
-                result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    // Closes the parent form.
-                    this.Close();
-                }
-            }
-            int basketStatus = androidCommunication.sendBasket(constructJsonFromBasket(basket));
-
-            //POS bağlantısı var
+            //SEPET BİLGİSİ POSA ULAŞTI
             if (basketStatus == 1)
             {
                 // Initializes the variables to pass to the MessageBox.Show method.
@@ -167,7 +201,7 @@ namespace TokenDotNet
                 }
             }
 
-            //POS Bağlantısı yok
+            //SEPET BİLGİSİ POSA ULAŞAMADI
             if (basketStatus == 0)
             {
                 // Initializes the variables to pass to the MessageBox.Show method.
@@ -207,8 +241,8 @@ namespace TokenDotNet
 
         private void setUpCallbacks()
         {
-            androidCommunication.setDeviceStateCallback(deviceStateCallback);
-            androidCommunication.setSerialInCallback(serialInCallback);
+            communication.setDeviceStateCallback(deviceStateCallback);
+            communication.setSerialInCallback(serialInCallback);
         }
 
         public MainForm()
@@ -257,7 +291,7 @@ namespace TokenDotNet
                 }
                 return;
             }
-            string fiscalInfo = androidCommunication.getFiscalInfo();
+            string fiscalInfo = communication.getFiscalInfo();
             updateConsole(fiscalInfo);
 
             lbFiscal.DisplayMember = "name";
@@ -268,14 +302,20 @@ namespace TokenDotNet
             lbFiscal.Items.Clear();
             lbSavedItems.Items.Clear();
 
-            foreach(Section section in fiscalinfoObj.sections)
+            if (fiscalinfoObj.sections.Count != 0)
             {
-                lbFiscal.Items.Add(section);
+                foreach (Section section in fiscalinfoObj.sections)
+                {
+                    lbFiscal.Items.Add(section);
+                }
             }
 
-            foreach (Plus item in fiscalinfoObj.plus)
+            if (fiscalinfoObj.plus.Count != 0)
             {
-                lbSavedItems.Items.Add(item);
+                foreach (Plus item in fiscalinfoObj.plus)
+                {
+                    lbSavedItems.Items.Add(item);
+                }
             }
 
         }
@@ -288,34 +328,76 @@ namespace TokenDotNet
 
         private void sendCash_Click(object sender, EventArgs e)
         {
-            basket.paymentItems.Add(new PaymentItem
+            if (basket.paymentItems.Count != 0)
             {
-                amount = basket.calculatePrice(),
-                description = "Tum tutarı nakit olarak odet",
-                taxRate = 5,
-                type = 1
-            });
-            
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
+                {
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    string message = "Ödeme planı varken sepet gönder butonunu kullanınız!";
+                    string caption = "Sepet Gönderilemedi";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
 
-            sendBasketWithPopup();
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }
+                }
+            }
+            else
+            {
+                basket.paymentItems.Add(new PaymentItem
+                {
+                    amount = basket.calculatePrice(),
+                    description = "Tum tutarı nakit olarak odet",
+                    taxRate = 5,
+                    type = 1
+                });
+
+                updateConsole(constructJsonFromBasket(basket));
+                updateBasketView();
+
+                sendBasketWithPopup();
+            }
         }
 
         private void sendCard_Click(object sender, EventArgs e)
         {
-            basket.paymentItems.Add(new PaymentItem
+            if (basket.paymentItems.Count != 0)
             {
-                amount = basket.calculatePrice(),
-                description = "Tum tutari kart olarak odet",
-                taxRate = 5,
-                type = 3
-            });
+                {
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    string message = "Ödeme planı varken sepet gönder butonunu kullanınız!";
+                    string caption = "Sepet Gönderilemedi";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
 
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }
+                }
+            }
+            else
+            {
+                basket.paymentItems.Add(new PaymentItem
+                {
+                    amount = basket.calculatePrice(),
+                    description = "Tum tutari kart olarak odet",
+                    taxRate = 5,
+                    type = 3
+                });
 
-            sendBasketWithPopup();
+                updateConsole(constructJsonFromBasket(basket));
+                updateBasketView();
+
+                sendBasketWithPopup();
+            }
         }
 
         private void addCustomer_Click(object sender, EventArgs e)
@@ -476,6 +558,16 @@ namespace TokenDotNet
 
         }
 
+        private int displayPriceToRealPrice(string str)
+        {
+            return (int)((float)Math.Round(float.Parse(str), 2) * 100);
+        }
+
+        private string realPriceToDisplayPrice(int price)
+        {
+            return ((float)price / 100).ToString();
+        }
+
         private void button3_Click_1(object sender, EventArgs e)
         {
             
@@ -522,7 +614,7 @@ namespace TokenDotNet
                 barcode = "",
                 name = section.name,
                 pluNo = 0,
-                price = int.Parse(tbItemPrice.Text)*100,
+                price = displayPriceToRealPrice(tbItemPrice.Text),
                 sectionNo = section.sectionNo,
                 taxPercent = section.taxPercent,
                 type = 0,
@@ -591,6 +683,43 @@ namespace TokenDotNet
         private void clearConsole(object sender, MouseEventArgs e)
         {
             tbConsole.Clear();
+        }
+
+        private void lbFiscal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbItemPrice_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbPrice_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exSale_Click(object sender, EventArgs e)
+        {
+            basket.items.Add(new Item
+            {
+                barcode = "",
+                name = "GIDA",
+                pluNo = 0,
+                price = 10000,
+                sectionNo = 10,
+                taxPercent = 1700,
+                type = 0,
+                unit = "Adet",
+                vatID = 0,
+                limit = 0,
+                quantity = 1000,
+                paymentType = 0
+            });
+            updateConsole(constructJsonFromBasket(basket));
+            updateBasketView();
+            sendBasketWithPopup();
         }
     }
 }

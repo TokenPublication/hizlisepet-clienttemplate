@@ -67,6 +67,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbVersion = new System.Windows.Forms.Label();
+            this.exSale = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -329,6 +330,7 @@
             this.lbFiscal.Name = "lbFiscal";
             this.lbFiscal.Size = new System.Drawing.Size(120, 148);
             this.lbFiscal.TabIndex = 24;
+            this.lbFiscal.SelectedIndexChanged += new System.EventHandler(this.lbFiscal_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -345,6 +347,7 @@
             this.tbItemPrice.Name = "tbItemPrice";
             this.tbItemPrice.Size = new System.Drawing.Size(171, 22);
             this.tbItemPrice.TabIndex = 29;
+            this.tbItemPrice.TextChanged += new System.EventHandler(this.tbItemPrice_TextChanged);
             // 
             // label5
             // 
@@ -363,6 +366,7 @@
             this.lbPrice.Size = new System.Drawing.Size(30, 16);
             this.lbPrice.TabIndex = 32;
             this.lbPrice.Text = "0TL";
+            this.lbPrice.Click += new System.EventHandler(this.lbPrice_Click);
             // 
             // lbCustomer
             // 
@@ -437,11 +441,22 @@
             this.lbVersion.TabIndex = 40;
             this.lbVersion.Text = "Version =";
             // 
+            // exSale
+            // 
+            this.exSale.Location = new System.Drawing.Point(213, 220);
+            this.exSale.Name = "exSale";
+            this.exSale.Size = new System.Drawing.Size(171, 28);
+            this.exSale.TabIndex = 41;
+            this.exSale.Text = "Örnek Satış Gönder";
+            this.exSale.UseVisualStyleBackColor = true;
+            this.exSale.Click += new System.EventHandler(this.exSale_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.exSale);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbDiscount);
@@ -530,6 +545,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbVersion;
+        private System.Windows.Forms.Button exSale;
     }
 }
 
