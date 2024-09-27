@@ -13,7 +13,7 @@ namespace TokenDotNet
         /// The main entry point for the application.
         /// </summary>
         /// 
-        public static string version = "Version = 1.0.0";
+        public static string version = "Version = 1.0.1";
         
         
         public static IntegrationHub.POSCommunication communication = IntegrationHub.POSCommunication.Instance;
