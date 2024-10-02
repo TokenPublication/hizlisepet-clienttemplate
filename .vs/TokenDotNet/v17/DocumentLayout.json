@@ -3,11 +3,19 @@
   "WorkspaceRootPath": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|c:\\users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|c:\\users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\fiscalinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\fiscalinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\fiscalinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -17,14 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|TokenDotNet||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
@@ -54,20 +54,20 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "FiscalInfo.cs",
               "DocumentMoniker": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\FiscalInfo.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\FiscalInfo.cs",
               "ToolTip": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\FiscalInfo.cs",
               "RelativeToolTip": "TokenDotNet\\FiscalInfo.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAxwBgAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAuwBgAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-04T09:08:49.455Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Basket.cs",
               "DocumentMoniker": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Basket.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Basket.cs",
@@ -75,8 +75,7 @@
               "RelativeToolTip": "TokenDotNet\\Basket.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T11:57:47.265Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-25T11:57:47.265Z"
             },
             {
               "$type": "Document",
@@ -86,20 +85,20 @@
               "RelativeDocumentMoniker": "TokenDotNet\\Program.cs",
               "ToolTip": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Program.cs",
               "RelativeToolTip": "TokenDotNet\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA3AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-19T10:31:09.237Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
               "ToolTip": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeToolTip": "TokenDotNet\\Form1.cs",
-              "ViewState": "AgIAAKkAAAAAAAAAAAD4v74AAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAPsAAAAAAAAAAAASwAYBAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-25T12:49:04.216Z",
               "EditorCaption": ""
@@ -118,7 +117,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
@@ -130,7 +129,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "App.config",
               "DocumentMoniker": "C:\\Users\\25200397\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\App.config",
               "RelativeDocumentMoniker": "TokenDotNet\\App.config",

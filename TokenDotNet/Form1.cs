@@ -26,6 +26,24 @@ namespace TokenDotNet
             Control.CheckForIllegalCrossThreadCalls = false;
             tbConsole.AppendText(value);
 
+            //BASKET PROCESS ERROR
+            if(type == 9)
+            {
+                string message = "Sepet POS tarafından işlenemedi lütfen POS uygulamasının açık olduğuna emin olup tekrar deneyiniz!";
+                string caption = "Sepet İşlenemedi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+
+            //SALE INFORMATION
             if(type == 3)
             {
                 // Initializes the variables to pass to the MessageBox.Show method.
@@ -76,6 +94,9 @@ namespace TokenDotNet
             {
                 isDeviceConnceted = false;
                 tbAvInfo.Text = "Bağlı cihaz yok!";
+                lbFiscal.Items.Clear();
+                lbSavedItems.Items.Clear();
+                
             }
         }
 
@@ -720,6 +741,11 @@ namespace TokenDotNet
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
             sendBasketWithPopup();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
