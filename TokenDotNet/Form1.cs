@@ -323,7 +323,7 @@ namespace TokenDotNet
             lbFiscal.Items.Clear();
             lbSavedItems.Items.Clear();
 
-            if (fiscalinfoObj.sections.Count != 0)
+            if (fiscalinfoObj.sections != null)
             {
                 foreach (Section section in fiscalinfoObj.sections)
                 {
@@ -331,7 +331,7 @@ namespace TokenDotNet
                 }
             }
 
-            if (fiscalinfoObj.plus.Count != 0)
+            if (fiscalinfoObj.plus != null)
             {
                 foreach (Plus item in fiscalinfoObj.plus)
                 {
@@ -581,7 +581,7 @@ namespace TokenDotNet
 
         private int displayPriceToRealPrice(string str)
         {
-            return (int)((float)Math.Round(float.Parse(str), 2) * 100);
+            return (int)(Math.Round(decimal.Parse(str), 2) * 100);
         }
 
         private string realPriceToDisplayPrice(int price)
