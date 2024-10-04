@@ -586,7 +586,7 @@ namespace TokenDotNet
 
         private string realPriceToDisplayPrice(int price)
         {
-            return ((float)price / 100).ToString();
+            return ((decimal)price / 100).ToString();
         }
 
         private void button3_Click_1(object sender, EventArgs e)
