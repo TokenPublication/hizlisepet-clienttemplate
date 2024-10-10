@@ -86,11 +86,12 @@ namespace TokenDotNet
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
+            string idcpy = string.Copy(id);
             Console.WriteLine("AGA GELDİ GELDİ:" + id);
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
-                tbAvInfo.Text = id;
+                tbAvInfo.Text = idcpy;
                 isDeviceConnceted = true;
             }
             else
