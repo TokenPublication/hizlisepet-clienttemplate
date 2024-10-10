@@ -440,6 +440,7 @@
             this.lbVersion.Size = new System.Drawing.Size(63, 16);
             this.lbVersion.TabIndex = 40;
             this.lbVersion.Text = "Version =";
+            this.lbVersion.Click += new System.EventHandler(this.lbVersion_Click);
             // 
             // exSale
             // 
