@@ -54,7 +54,7 @@ namespace TokenDotNet
 
         public override string ToString()
         {
-            return $"{name} - {price/100}TL";
+            return $"{name} - {((float)price / 100).ToString()}TL";
         }
     }
 
