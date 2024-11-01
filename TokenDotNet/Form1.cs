@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using IntegrationHub;
 using static System.Collections.Specialized.BitVector32;
+using System.Runtime.InteropServices;
 
 namespace TokenDotNet
 {
@@ -21,10 +22,12 @@ namespace TokenDotNet
         private IntegrationHub.POSCommunication communication = Program.communication;
         private bool isDeviceConnceted = false;
 
-        public int serialInCallback(int type, string value)
+        public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
             Control.CheckForIllegalCrossThreadCalls = false;
-            tbConsole.AppendText(value);
+            string storeValue = string.Copy(value);
+
+            updateConsole(storeValue);
 
             //BASKET PROCESS ERROR
             if(type == 9)
@@ -49,7 +52,8 @@ namespace TokenDotNet
                 // Initializes the variables to pass to the MessageBox.Show method.
                 try
                 {
-                    ReceiptInfo receiptInfo = constructReceiptInfoFromJson(value);
+                    Console.WriteLine("DATA FROM C++ IS: " + storeValue);
+                    ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
                     string message = "";
                     if (receiptInfo.status == 0)
                     {
@@ -71,23 +75,23 @@ namespace TokenDotNet
                         // Closes the parent form.
                         this.Close();
                     }
+                                        Console.WriteLine("DATA FROM C++ IS: " + storeValue);
                 }
                 catch
                 {
                     Console.WriteLine("ERROR");
                 }
             }
-
-            return 1;
         }
 
-        public void deviceStateCallback(bool isConnected, string id)
+        public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
-
+            string idcpy = string.Copy(id);
+            Console.WriteLine("AGA GELDİ GELDİ:" + id);
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
-                tbAvInfo.Text = id;
+                tbAvInfo.Text = idcpy;
                 isDeviceConnceted = true;
             }
             else
@@ -744,6 +748,11 @@ namespace TokenDotNet
         }
 
         private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbVersion_Click(object sender, EventArgs e)
         {
 
         }
