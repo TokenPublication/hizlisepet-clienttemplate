@@ -31,7 +31,6 @@ C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Release
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Release\TokenDotNet.exe
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Release\TokenDotNet.pdb
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Release\Newtonsoft.Json.dll
-C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Release\IntegrationHub.pdb
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\bin\Release\Newtonsoft.Json.xml
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Release\TokenDotNet.csproj.AssemblyReference.cache
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Release\TokenDotNet.MainForm.resources
