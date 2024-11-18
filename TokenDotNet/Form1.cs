@@ -87,7 +87,7 @@ namespace TokenDotNet
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
             string idcpy = string.Copy(id);
-            Console.WriteLine("AGA GELDİ GELDİ:" + id);
+            Console.WriteLine("Device ID: " + id);
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
@@ -97,10 +97,22 @@ namespace TokenDotNet
             else
             {
                 isDeviceConnceted = false;
-                tbAvInfo.Text = "Bağlı cihaz yok!";
-                lbFiscal.Items.Clear();
-                lbSavedItems.Items.Clear();
-                
+                Task.Run(() => {
+                    if (tbAvInfo.InvokeRequired) { tbAvInfo.Invoke((MethodInvoker)(() => tbAvInfo.Text = "Bağlı cihaz yok!")); }
+                    else tbAvInfo.Text = "Bağlı cihaz yok!";
+                    Console.WriteLine("Items Freed1");
+                });
+                Task.Run(() => {
+                    if (lbFiscal.InvokeRequired) { lbFiscal.Invoke((MethodInvoker)(() => lbFiscal.Items.Clear())); }
+                    else lbFiscal.Items.Clear();
+                    Console.WriteLine("Items Freed2");
+                });
+                Task.Run(() => {
+                    if (lbSavedItems.InvokeRequired) { lbSavedItems.Invoke((MethodInvoker)(() => lbSavedItems.Items.Clear())); }
+                    else lbSavedItems.Items.Clear();
+                    Console.WriteLine("Items Freed3");
+                });
+                Console.WriteLine("Items Freed4");
             }
         }
 
@@ -115,7 +127,16 @@ namespace TokenDotNet
 
         private string constructJsonFromBasket(Basket basket)
         {
-            return JsonConvert.SerializeObject(basket, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(basket, Formatting.Indented);
+            Console.WriteLine(json);
+            return json;
+        } 
+        
+        private string constructJsonFromPayment(PaymentItem payment)
+        {
+            string json = JsonConvert.SerializeObject(payment, Formatting.Indented);
+            Console.WriteLine(json);
+            return json;
         }
 
         private void updateConsole(string update)
@@ -373,18 +394,33 @@ namespace TokenDotNet
             }
             else
             {
-                basket.paymentItems.Add(new PaymentItem
+                if (communication.getActiveDeviceIndex() == 1)
                 {
-                    amount = basket.calculatePrice(),
-                    description = "Tum tutarı nakit olarak odet",
-                    taxRate = 5,
-                    type = 1
-                });
+                    int amount = displayPriceToRealPrice(tbItemPrice.Text);
+                    string json = constructJsonFromPayment(new PaymentItem
+                    {
+                        amount = amount,
+                        description = "nakit ödeme",
+                        taxRate = 5,
+                        type = 1
+                    });
+                    communication.sendPayment(json);
+                }
+                else
+                {
+                    basket.paymentItems.Add(new PaymentItem
+                    {
+                        amount = basket.calculatePrice(),
+                        description = "Tum tutarı nakit olarak odet",
+                        taxRate = 5,
+                        type = 1
+                    });
+                
+                    updateConsole(constructJsonFromBasket(basket));
+                    updateBasketView();
 
-                updateConsole(constructJsonFromBasket(basket));
-                updateBasketView();
-
-                sendBasketWithPopup();
+                    sendBasketWithPopup();
+                }
             }
         }
 
@@ -410,18 +446,33 @@ namespace TokenDotNet
             }
             else
             {
-                basket.paymentItems.Add(new PaymentItem
+                if (communication.getActiveDeviceIndex() == 1)
                 {
-                    amount = basket.calculatePrice(),
-                    description = "Tum tutari kart olarak odet",
-                    taxRate = 5,
-                    type = 3
-                });
+                    int amount = displayPriceToRealPrice(tbItemPrice.Text);
+                    string json = constructJsonFromPayment(new PaymentItem
+                    {
+                        amount = amount,
+                        description = "kart ödeme",
+                        taxRate = 5,
+                        type = 3
+                    });
+                    communication.sendPayment(json);
+                }
+                else
+                {
+                    basket.paymentItems.Add(new PaymentItem
+                    {
+                        amount = basket.calculatePrice(),
+                        description = "Tum tutari kart olarak odet",
+                        taxRate = 5,
+                        type = 3
+                    });
 
-                updateConsole(constructJsonFromBasket(basket));
-                updateBasketView();
+                    updateConsole(constructJsonFromBasket(basket));
+                    updateBasketView();
 
-                sendBasketWithPopup();
+                    sendBasketWithPopup();
+                }
             }
         }
 
@@ -727,24 +778,31 @@ namespace TokenDotNet
 
         private void exSale_Click(object sender, EventArgs e)
         {
-            basket.items.Add(new Item
-            {
-                barcode = "",
-                name = "GIDA",
-                pluNo = 0,
-                price = 10000,
-                sectionNo = 10,
-                taxPercent = 1700,
-                type = 0,
-                unit = "Adet",
-                vatID = 0,
-                limit = 0,
-                quantity = 1000,
-                paymentType = 0
-            });
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
-            sendBasketWithPopup();
+            string example = "{\r\n  \"UUID\": \"dedddcdf-0938-46b9-b18b-d268bfc2f1fa\",\r\n  \"amount\": 0,\r\n  \"basketID\": \"dcd8e72c-ca4c-4246-8598-bceea8a635ff\",\r\n  \"clientid\": \"com.tokeninc.ecr\",\r\n  \"createdTime\": 1731065762,\r\n  \"customerInfo\": {\r\n    \"name\": \"\",\r\n    \"taxID\": \"68533094750\"\r\n  },\r\n  \"documentType\": 9007,\r\n  \"enableSecondScreen\": false,\r\n  \"firstCheck\": \"\",\r\n  \"id\": 0,\r\n  \"infoReceiptInfo\": {\r\n    \"serialNo\": \"FSD\"\r\n  },\r\n  \"InstanceIdentifier\": \"\",\r\n  \"invoiceCollectionSequentialNo\": \"\",\r\n  \"invoiceID\": \"\",\r\n  \"isPowerCut\": false,\r\n  \"isVoid\": false,\r\n  \"isWayBill\": false,\r\n  \"items\": [\r\n    {\r\n      \"name\": \"Yiyecek\",\r\n      \"price\": 45000,\r\n      \"quantity\": 1000.0,\r\n      \"sectionNo\": 1,\r\n      \"taxPercent\": 1000.0\r\n    }\r\n  ],\r\n  \"packageName\": \"com.tokeninc.ecr\",\r\n  \"paymentCount\": 1,\r\n  \"paymentScreen\": 0,\r\n  \"paymentItems\": [\r\n    {\r\n      \"amount\": 45000.0,\r\n      \"BatchNo\": 0,\r\n      \"currencyId\": 0,\r\n      \"description\": \"Nakit\",\r\n      \"operatorId\": 0,\r\n      \"status\": -1,\r\n      \"taxRate\": -1,\r\n      \"TxnNo\": 0,\r\n      \"type\": 1\r\n    }\r\n  ],\r\n  \"price\": 0,\r\n  \"quantity\": 0,\r\n  \"receiptNo\": \"7\",\r\n  \"resultObject\": {},\r\n  \"sessionID\": \"\",\r\n  \"splitRate\": 0,\r\n  \"state\": 3,\r\n  \"status\": 0,\r\n  \"totalValue\": 0.0,\r\n  \"type\": 0,\r\n  \"uuid\": \"\",\r\n  \"value\": 0.0,\r\n  \"voidPrice\": 0,\r\n  \"voidQuantity\": 0,\r\n  \"zNo\": \"22\"\r\n}";
+            communication.sendBasket(example);
+            //basket.items.Add(new Item
+            //{
+            //    barcode = "",
+            //    name = "GIDA",
+            //    pluNo = 0,
+            //    price = 10000,
+            //    sectionNo = 10,
+            //    taxPercent = 1700,
+            //    type = 0,
+            //    unit = "Adet",
+            //    vatID = 0,
+            //    limit = 0,
+            //    quantity = 1000,
+            //    paymentType = 0
+            //});
+            //updateConsole(constructJsonFromBasket(basket));
+            //updateBasketView();
+            //sendBasketWithPopup();
+        }
+
+        private void disconnect_communication(object sender, EventArgs e)
+        {
+            communication.deleteCommunication();
         }
 
         private void button1_Click_1(object sender, EventArgs e)

@@ -68,6 +68,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbVersion = new System.Windows.Forms.Label();
             this.exSale = new System.Windows.Forms.Button();
+            this.disconnect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -452,11 +453,22 @@
             this.exSale.UseVisualStyleBackColor = true;
             this.exSale.Click += new System.EventHandler(this.exSale_Click);
             // 
+            // disconnect
+            // 
+            this.disconnect.Location = new System.Drawing.Point(213, 260);
+            this.disconnect.Name = "disconnect";
+            this.disconnect.Size = new System.Drawing.Size(171, 28);
+            this.disconnect.TabIndex = 42;
+            this.disconnect.Text = "Bağlantıyı Sonlandır";
+            this.disconnect.UseVisualStyleBackColor = true;
+            this.disconnect.Click += new System.EventHandler(this.disconnect_communication);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.disconnect);
             this.Controls.Add(this.exSale);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.pictureBox1);
@@ -547,6 +559,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbVersion;
         private System.Windows.Forms.Button exSale;
+        private System.Windows.Forms.Button disconnect;
     }
 }
 
