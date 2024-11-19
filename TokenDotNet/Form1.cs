@@ -810,27 +810,24 @@ namespace TokenDotNet
         {
             using (PopupForm popup = new PopupForm())
             {
-                if (popup.ShowDialog() == DialogResult.OK)
-                {
-                    // Retrieve the input from the popup
-                    string userInput = popup.UserInput;
 
+                DialogResult result = popup.ShowDialog();
+                if (result == DialogResult.OK || result == DialogResult.Yes)
+                {
                     if (!isDeviceConnceted)
                     {
                         string message = "POS cihazı bağlayıp tekrar deneyiniz.";
                         string caption = "Bağlı Cihaz Yok";
                         MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result;
+                        DialogResult _result;
 
-                        result = MessageBox.Show(message, caption, buttons);
-                        if (result == System.Windows.Forms.DialogResult.Yes)
-                        {
-                            // Closes the parent form.
-                            this.Close();
-                        }
+                        _result = MessageBox.Show(message, caption, buttons);
+                        if (_result == DialogResult.Yes) this.Close();
+
                         return;
                     }
 
+                    string userInput = popup.UserInput;
                     try
                     {
                         // parsing to check if it is real json object
@@ -838,21 +835,21 @@ namespace TokenDotNet
                         var obj = JsonConvert.DeserializeObject<object>(escapedUserInput);
                         Console.WriteLine(escapedUserInput);
 
-                        communication.sendBasket(userInput);
+                        if (result == DialogResult.OK)
+                            communication.sendBasket(userInput);
+                        else
+                            communication.sendPayment(userInput);
                     }
                     catch (JsonException)
                     {
                         string message = "Geçerli bir json objesiyle tekrar deneyiniz.";
                         string caption = "Geçersiz Json";
                         MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result;
+                        DialogResult _result;
 
-                        result = MessageBox.Show(message, caption, buttons);
-                        if (result == System.Windows.Forms.DialogResult.Yes)
-                        {
-                            // Closes the parent form.
-                            this.Close();
-                        }
+                        _result = MessageBox.Show(message, caption, buttons);
+                        if (_result == DialogResult.Yes) this.Close();
+                        
                         return;
                     }
                 }
@@ -890,26 +887,37 @@ namespace TokenDotNet
             Button cancelButton = new Button
             {
                 Text = "İptal",
-                Location = new System.Drawing.Point(120, 300),
+                Location = new System.Drawing.Point(40, 310),
                 DialogResult = DialogResult.Cancel
             };
             this.Controls.Add(cancelButton);
 
-            Button okButton = new Button
+            Button sendPaymentButton = new Button
             {
-                Text = "Gönder",
-                Location = new System.Drawing.Point(200, 300),
-                DialogResult = DialogResult.OK
+                Text = "Ödeme Gönder",
+                Location = new System.Drawing.Point(120, 300),
+                DialogResult = DialogResult.Yes,
+                Height = 40,
             };
-            okButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
-            this.Controls.Add(okButton);
+            sendPaymentButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            this.Controls.Add(sendPaymentButton);
+
+            Button sendBasketButton = new Button
+            {
+                Text = "Sepet Gönder",
+                Location = new System.Drawing.Point(200, 300),
+                DialogResult = DialogResult.OK,
+                Height = 40,
+            };
+            sendBasketButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            this.Controls.Add(sendBasketButton);
+
 
             this.Text = "Json Gönder";
-            this.AcceptButton = okButton;
             this.CancelButton = cancelButton;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterParent;
-            this.ClientSize = new System.Drawing.Size(300, 340);
+            this.ClientSize = new System.Drawing.Size(300, 360);
         }
     }
 }
