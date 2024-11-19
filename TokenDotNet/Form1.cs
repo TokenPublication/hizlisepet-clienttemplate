@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using IntegrationHub;
 using static System.Collections.Specialized.BitVector32;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace TokenDotNet
 {
@@ -805,6 +806,59 @@ namespace TokenDotNet
             communication.deleteCommunication();
         }
 
+        private void handleSendJsonButton(object sender, EventArgs e)
+        {
+            using (PopupForm popup = new PopupForm())
+            {
+                if (popup.ShowDialog() == DialogResult.OK)
+                {
+                    // Retrieve the input from the popup
+                    string userInput = popup.UserInput;
+
+                    if (!isDeviceConnceted)
+                    {
+                        string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                        string caption = "Bağlı Cihaz Yok";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+
+                        result = MessageBox.Show(message, caption, buttons);
+                        if (result == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            // Closes the parent form.
+                            this.Close();
+                        }
+                        return;
+                    }
+
+                    try
+                    {
+                        // parsing to check if it is real json object
+                        string escapedUserInput = Regex.Unescape(userInput);
+                        var obj = JsonConvert.DeserializeObject<object>(escapedUserInput);
+                        Console.WriteLine(escapedUserInput);
+
+                        communication.sendBasket(userInput);
+                    }
+                    catch (JsonException)
+                    {
+                        string message = "Geçerli bir json objesiyle tekrar deneyiniz.";
+                        string caption = "Geçersiz Json";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+
+                        result = MessageBox.Show(message, caption, buttons);
+                        if (result == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            // Closes the parent form.
+                            this.Close();
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+
         private void button1_Click_1(object sender, EventArgs e)
         {
 
@@ -813,6 +867,49 @@ namespace TokenDotNet
         private void lbVersion_Click(object sender, EventArgs e)
         {
 
+        }
+    }
+
+    public partial class PopupForm : Form
+    {
+        public string UserInput { get; private set; }
+
+        public PopupForm()
+        {
+
+            TextBox inputTextBox = new TextBox
+            {
+                Location = new System.Drawing.Point(20, 20),
+                Width = 260,
+                Height = 260,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            this.Controls.Add(inputTextBox);
+
+            Button cancelButton = new Button
+            {
+                Text = "İptal",
+                Location = new System.Drawing.Point(120, 300),
+                DialogResult = DialogResult.Cancel
+            };
+            this.Controls.Add(cancelButton);
+
+            Button okButton = new Button
+            {
+                Text = "Gönder",
+                Location = new System.Drawing.Point(200, 300),
+                DialogResult = DialogResult.OK
+            };
+            okButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            this.Controls.Add(okButton);
+
+            this.Text = "Json Gönder";
+            this.AcceptButton = okButton;
+            this.CancelButton = cancelButton;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.ClientSize = new System.Drawing.Size(300, 340);
         }
     }
 }

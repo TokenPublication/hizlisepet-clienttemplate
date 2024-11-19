@@ -40,3 +40,16 @@ C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Release
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Release\TokenDot.1F6FC7B5.Up2Date
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Release\TokenDotNet.exe
 C:\Users\25200024\Source\Repos\hizlisepet-clienttemplate\TokenDotNet\obj\Release\TokenDotNet.pdb
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Release\TokenDotNet.exe.config
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Release\TokenDotNet.exe
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Release\TokenDotNet.pdb
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Release\Newtonsoft.Json.dll
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Release\Newtonsoft.Json.xml
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.csproj.AssemblyReference.cache
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.MainForm.resources
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.Properties.Resources.resources
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.csproj.GenerateResource.cache
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.csproj.CoreCompileInputs.cache
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDot.1F6FC7B5.Up2Date
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.exe
+C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Release\TokenDotNet.pdb

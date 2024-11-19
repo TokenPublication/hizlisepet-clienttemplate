@@ -69,6 +69,7 @@
             this.lbVersion = new System.Windows.Forms.Label();
             this.exSale = new System.Windows.Forms.Button();
             this.disconnect = new System.Windows.Forms.Button();
+            this.sendJson = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -455,7 +456,7 @@
             // 
             // disconnect
             // 
-            this.disconnect.Location = new System.Drawing.Point(213, 260);
+            this.disconnect.Location = new System.Drawing.Point(213, 250);
             this.disconnect.Name = "disconnect";
             this.disconnect.Size = new System.Drawing.Size(171, 28);
             this.disconnect.TabIndex = 42;
@@ -463,11 +464,22 @@
             this.disconnect.UseVisualStyleBackColor = true;
             this.disconnect.Click += new System.EventHandler(this.disconnect_communication);
             // 
+            // sendJson
+            // 
+            this.sendJson.Location = new System.Drawing.Point(213, 280);
+            this.sendJson.Name = "sendJson";
+            this.sendJson.Size = new System.Drawing.Size(171, 28);
+            this.sendJson.TabIndex = 43;
+            this.sendJson.Text = "Json Gönder";
+            this.sendJson.UseVisualStyleBackColor = true;
+            this.sendJson.Click += new System.EventHandler(this.handleSendJsonButton);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.sendJson);
             this.Controls.Add(this.disconnect);
             this.Controls.Add(this.exSale);
             this.Controls.Add(this.lbVersion);
@@ -560,6 +572,7 @@
         private System.Windows.Forms.Label lbVersion;
         private System.Windows.Forms.Button exSale;
         private System.Windows.Forms.Button disconnect;
+        private System.Windows.Forms.Button sendJson;
     }
 }
 
