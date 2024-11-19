@@ -128,21 +128,21 @@ namespace TokenDotNet
 
         private string constructJsonFromBasket(Basket basket)
         {
-            string json = JsonConvert.SerializeObject(basket, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(basket);
             Console.WriteLine(json);
             return json;
         } 
         
         private string constructJsonFromPayment(PaymentItem payment)
         {
-            string json = JsonConvert.SerializeObject(payment, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(payment);
             Console.WriteLine(json);
             return json;
         }
 
-        private void updateConsole(string update)
+        private void updateConsole(string text)
         {
-            tbConsole.AppendText(update);
+            tbConsole.Text = text;
         }
 
         private void updateBasketView()
@@ -831,14 +831,14 @@ namespace TokenDotNet
                     try
                     {
                         // parsing to check if it is real json object
-                        string escapedUserInput = Regex.Unescape(userInput);
-                        var obj = JsonConvert.DeserializeObject<object>(escapedUserInput);
-                        Console.WriteLine(escapedUserInput);
+                        var obj = JsonConvert.DeserializeObject<object>(Regex.Unescape(userInput));
 
+                        string json = JsonConvert.SerializeObject(obj);
+                        Console.WriteLine(json);
                         if (result == DialogResult.OK)
-                            communication.sendBasket(userInput);
+                            communication.sendBasket(json);
                         else
-                            communication.sendPayment(userInput);
+                            communication.sendPayment(json);
                     }
                     catch (JsonException)
                     {

@@ -34,13 +34,17 @@
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\25200399\\projects\\hizlisepetgui\\TokenDotNet\\Form1.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
-              "ToolTip": "C:\\Users\\25200399\\projects\\hizlisepetgui\\TokenDotNet\\Form1.cs",
-              "RelativeToolTip": "TokenDotNet\\Form1.cs",
-              "ViewState": "AgIAAHcDAAAAAAAAAAAAAHkDAAA6AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\25200399\\projects\\hizlisepetgui\\TokenDotNet\\Form1.cs*",
+              "RelativeToolTip": "TokenDotNet\\Form1.cs*",
+              "ViewState": "AgIAACoDAAAAAAAAAAAcwDsDAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-01T11:39:15.557Z",
               "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
@@ -65,8 +69,8 @@
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\25200399\\projects\\hizlisepetgui\\TokenDotNet\\Form1.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
-              "ToolTip": "C:\\Users\\25200399\\projects\\hizlisepetgui\\TokenDotNet\\Form1.cs [Design]",
-              "RelativeToolTip": "TokenDotNet\\Form1.cs [Design]",
+              "ToolTip": "C:\\Users\\25200399\\projects\\hizlisepetgui\\TokenDotNet\\Form1.cs [Design]*",
+              "RelativeToolTip": "TokenDotNet\\Form1.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-19T07:55:39.849Z",
               "EditorCaption": " [Design]"
