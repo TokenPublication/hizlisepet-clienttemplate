@@ -319,25 +319,8 @@ namespace TokenDotNet
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void getFiscalInfo()
         {
-            if (!isDeviceConnceted)
-            {
-                // Initializes the variables to pass to the MessageBox.Show method.
-                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
-                string caption = "Bağlı Cihaz Yok";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                // Displays the MessageBox.
-                result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    // Closes the parent form.
-                    this.Close();
-                }
-                return;
-            }
             string fiscalInfo = communication.getFiscalInfo();
             updateConsole(fiscalInfo);
 
@@ -364,7 +347,23 @@ namespace TokenDotNet
                     lbSavedItems.Items.Add(item);
                 }
             }
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!isDeviceConnceted)
+            {
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+                if (result == DialogResult.Yes) this.Close();
+
+                return;
+            }
+
+            Thread thread = new Thread(getFiscalInfo);
+            thread.Start();
         }
 
         //pos takılı ama hızlı sepet kapalıyken blockluyor programı
