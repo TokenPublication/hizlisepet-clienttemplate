@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 using IntegrationHub;
 using static System.Collections.Specialized.BitVector32;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace TokenDotNet
 {
@@ -87,7 +90,7 @@ namespace TokenDotNet
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
             string idcpy = string.Copy(id);
-            Console.WriteLine("AGA GELDİ GELDİ:" + id);
+            Console.WriteLine("Device ID: " + id);
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
@@ -97,10 +100,22 @@ namespace TokenDotNet
             else
             {
                 isDeviceConnceted = false;
-                tbAvInfo.Text = "Bağlı cihaz yok!";
-                lbFiscal.Items.Clear();
-                lbSavedItems.Items.Clear();
-                
+                Task.Run(() => {
+                    if (tbAvInfo.InvokeRequired) { tbAvInfo.Invoke((MethodInvoker)(() => tbAvInfo.Text = "Bağlı cihaz yok!")); }
+                    else tbAvInfo.Text = "Bağlı cihaz yok!";
+                    Console.WriteLine("Items Freed1");
+                });
+                Task.Run(() => {
+                    if (lbFiscal.InvokeRequired) { lbFiscal.Invoke((MethodInvoker)(() => lbFiscal.Items.Clear())); }
+                    else lbFiscal.Items.Clear();
+                    Console.WriteLine("Items Freed2");
+                });
+                Task.Run(() => {
+                    if (lbSavedItems.InvokeRequired) { lbSavedItems.Invoke((MethodInvoker)(() => lbSavedItems.Items.Clear())); }
+                    else lbSavedItems.Items.Clear();
+                    Console.WriteLine("Items Freed3");
+                });
+                Console.WriteLine("Items Freed4");
             }
         }
 
@@ -115,12 +130,21 @@ namespace TokenDotNet
 
         private string constructJsonFromBasket(Basket basket)
         {
-            return JsonConvert.SerializeObject(basket, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(basket);
+            Console.WriteLine(json);
+            return json;
+        } 
+        
+        private string constructJsonFromPayment(PaymentItem payment)
+        {
+            string json = JsonConvert.SerializeObject(payment);
+            Console.WriteLine(json);
+            return json;
         }
 
-        private void updateConsole(string update)
+        private void updateConsole(string text)
         {
-            tbConsole.AppendText(update);
+            tbConsole.Text = text;
         }
 
         private void updateBasketView()
@@ -373,18 +397,33 @@ namespace TokenDotNet
             }
             else
             {
-                basket.paymentItems.Add(new PaymentItem
+                if (communication.getActiveDeviceIndex() == 1)
                 {
-                    amount = basket.calculatePrice(),
-                    description = "Tum tutarı nakit olarak odet",
-                    taxRate = 5,
-                    type = 1
-                });
+                    int amount = displayPriceToRealPrice(tbItemPrice.Text);
+                    string json = constructJsonFromPayment(new PaymentItem
+                    {
+                        amount = amount,
+                        description = "nakit ödeme",
+                        taxRate = 5,
+                        type = 1
+                    });
+                    communication.sendPayment(json);
+                }
+                else
+                {
+                    basket.paymentItems.Add(new PaymentItem
+                    {
+                        amount = basket.calculatePrice(),
+                        description = "Tum tutarı nakit olarak odet",
+                        taxRate = 5,
+                        type = 1
+                    });
+                
+                    updateConsole(constructJsonFromBasket(basket));
+                    updateBasketView();
 
-                updateConsole(constructJsonFromBasket(basket));
-                updateBasketView();
-
-                sendBasketWithPopup();
+                    sendBasketWithPopup();
+                }
             }
         }
 
@@ -410,18 +449,33 @@ namespace TokenDotNet
             }
             else
             {
-                basket.paymentItems.Add(new PaymentItem
+                if (communication.getActiveDeviceIndex() == 1)
                 {
-                    amount = basket.calculatePrice(),
-                    description = "Tum tutari kart olarak odet",
-                    taxRate = 5,
-                    type = 3
-                });
+                    int amount = displayPriceToRealPrice(tbItemPrice.Text);
+                    string json = constructJsonFromPayment(new PaymentItem
+                    {
+                        amount = amount,
+                        description = "kart ödeme",
+                        taxRate = 5,
+                        type = 3
+                    });
+                    communication.sendPayment(json);
+                }
+                else
+                {
+                    basket.paymentItems.Add(new PaymentItem
+                    {
+                        amount = basket.calculatePrice(),
+                        description = "Tum tutari kart olarak odet",
+                        taxRate = 5,
+                        type = 3
+                    });
 
-                updateConsole(constructJsonFromBasket(basket));
-                updateBasketView();
+                    updateConsole(constructJsonFromBasket(basket));
+                    updateBasketView();
 
-                sendBasketWithPopup();
+                    sendBasketWithPopup();
+                }
             }
         }
 
@@ -727,24 +781,107 @@ namespace TokenDotNet
 
         private void exSale_Click(object sender, EventArgs e)
         {
-            basket.items.Add(new Item
+
+            if (lbFiscal.Items.Count > 0)
             {
-                barcode = "",
-                name = "GIDA",
-                pluNo = 0,
-                price = 10000,
-                sectionNo = 10,
-                taxPercent = 1700,
-                type = 0,
-                unit = "Adet",
-                vatID = 0,
-                limit = 0,
-                quantity = 1000,
-                paymentType = 0
-            });
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
-            sendBasketWithPopup();
+                var section = lbFiscal.Items[0] as Section;
+                basket.items.Add(new Item
+                {
+                    barcode = "",
+                    name = section.name,
+                    pluNo = 0,
+                    price = 10000,
+                    sectionNo = section.sectionNo,
+                    taxPercent = section.taxPercent,
+                    type = 0,
+                    unit = "Adet",
+                    vatID = 0,
+                    limit = 0,
+                    quantity = 1000,
+                    paymentType = 0
+                });
+                basket.paymentItems.Add(new PaymentItem
+                {
+                    amount = basket.calculatePrice(),
+                    description = "Tum tutarı nakit olarak odet",
+                    taxRate = 5,
+                    type = 1
+                });
+                updateConsole(constructJsonFromBasket(basket));
+                updateBasketView();
+                sendBasketWithPopup();
+            }
+            else
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Lütfen önce kısımları çekiniz!";
+                string caption = "";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+        }
+
+        private void disconnect_communication(object sender, EventArgs e)
+        {
+            communication.deleteCommunication();
+        }
+
+        private void handleSendJsonButton(object sender, EventArgs e)
+        {
+            using (PopupForm popup = new PopupForm())
+            {
+
+                DialogResult result = popup.ShowDialog();
+                if (result == DialogResult.OK || result == DialogResult.Yes)
+                {
+                    if (!isDeviceConnceted)
+                    {
+                        string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                        string caption = "Bağlı Cihaz Yok";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult _result;
+
+                        _result = MessageBox.Show(message, caption, buttons);
+                        if (_result == DialogResult.Yes) this.Close();
+
+                        return;
+                    }
+
+                    string userInput = popup.UserInput;
+                    try
+                    {
+                        // parsing to check if it is real json object
+                        var obj = JsonConvert.DeserializeObject<object>(Regex.Unescape(userInput));
+
+                        string json = JsonConvert.SerializeObject(obj);
+                        Console.WriteLine(json);
+                        if (result == DialogResult.OK)
+                            communication.sendBasket(json);
+                        else
+                            communication.sendPayment(json);
+                    }
+                    catch (JsonException)
+                    {
+                        string message = "Geçerli bir json objesiyle tekrar deneyiniz.";
+                        string caption = "Geçersiz Json";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult _result;
+
+                        _result = MessageBox.Show(message, caption, buttons);
+                        if (_result == DialogResult.Yes) this.Close();
+                        
+                        return;
+                    }
+                }
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -755,6 +892,60 @@ namespace TokenDotNet
         private void lbVersion_Click(object sender, EventArgs e)
         {
 
+        }
+    }
+
+    public partial class PopupForm : Form
+    {
+        public string UserInput { get; private set; }
+
+        public PopupForm()
+        {
+
+            TextBox inputTextBox = new TextBox
+            {
+                Location = new System.Drawing.Point(20, 20),
+                Width = 260,
+                Height = 260,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            this.Controls.Add(inputTextBox);
+
+            Button cancelButton = new Button
+            {
+                Text = "İptal",
+                Location = new System.Drawing.Point(40, 310),
+                DialogResult = DialogResult.Cancel
+            };
+            this.Controls.Add(cancelButton);
+
+            Button sendPaymentButton = new Button
+            {
+                Text = "Ödeme Gönder",
+                Location = new System.Drawing.Point(120, 300),
+                DialogResult = DialogResult.Yes,
+                Height = 40,
+            };
+            sendPaymentButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            this.Controls.Add(sendPaymentButton);
+
+            Button sendBasketButton = new Button
+            {
+                Text = "Sepet Gönder",
+                Location = new System.Drawing.Point(200, 300),
+                DialogResult = DialogResult.OK,
+                Height = 40,
+            };
+            sendBasketButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            this.Controls.Add(sendBasketButton);
+
+
+            this.Text = "Json Gönder";
+            this.CancelButton = cancelButton;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.ClientSize = new System.Drawing.Size(300, 360);
         }
     }
 }

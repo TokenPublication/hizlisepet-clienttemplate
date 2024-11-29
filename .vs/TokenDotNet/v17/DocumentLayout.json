@@ -1,45 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\",
+  "WorkspaceRootPath": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|TokenDotNet||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|c:\\users\\samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|c:\\users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\basket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\basket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\fiscalinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\fiscalinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\receiptinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\receiptinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\25200397\\source\\repos\\IntegrationHub\\IntegrationHub\\IntegrationHub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\25200397\\OneDrive - Token Finansal Teknolojiler A.S\\Desktop\\ExternalTest\\src\\test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\25200397\\AppData\\Local\\Temp\\92685cbe-e02d-4629-8725-c47d26428159_Beko DLL v1.0.0.15.zip.159\\Beko DLL v1.0.0.15\\ExternalTest\\src\\test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|c:\\users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|a54ad834-9219-4aa6-b589-607af21c3e26"
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -53,19 +22,11 @@
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Bookmark",
@@ -76,123 +37,32 @@
               "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TokenDotNet",
-              "DocumentMoniker": "C:\\Users\\25200024\\Source\\Repos\\hizlisepet-clienttemplate\\TokenDotNet\\TokenDotNet.csproj",
-              "RelativeDocumentMoniker": "TokenDotNet\\TokenDotNet.csproj",
-              "ToolTip": "C:\\Users\\25200024\\Source\\Repos\\hizlisepet-clienttemplate\\TokenDotNet\\TokenDotNet.csproj",
-              "RelativeToolTip": "TokenDotNet\\TokenDotNet.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-07T06:22:27.473Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.Designer.cs",
+              "RelativeDocumentMoniker": "TokenDotNet\\Form1.Designer.cs",
+              "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.Designer.cs",
+              "RelativeToolTip": "TokenDotNet\\Form1.Designer.cs",
+              "ViewState": "AgIAADICAAAAAAAAAIAwwDECAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-18T10:32:27.506Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
-              "ToolTip": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
+              "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeToolTip": "TokenDotNet\\Form1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAALsBAAAAAAAAAAAAAMgBAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-10T10:05:36.931Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Basket.cs",
-              "DocumentMoniker": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Basket.cs",
-              "RelativeDocumentMoniker": "TokenDotNet\\Basket.cs",
-              "ToolTip": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Basket.cs",
-              "RelativeToolTip": "TokenDotNet\\Basket.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T11:57:47.265Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Program.cs",
-              "RelativeDocumentMoniker": "TokenDotNet\\Program.cs",
-              "ToolTip": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Program.cs",
-              "RelativeToolTip": "TokenDotNet\\Program.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAQwAkAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-19T10:31:09.237Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
-              "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
-              "ToolTip": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs [Design]",
-              "RelativeToolTip": "TokenDotNet\\Form1.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-03T11:22:32.704Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ReceiptInfo.cs",
-              "DocumentMoniker": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\ReceiptInfo.cs",
-              "RelativeDocumentMoniker": "TokenDotNet\\ReceiptInfo.cs",
-              "ToolTip": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\ReceiptInfo.cs",
-              "RelativeToolTip": "TokenDotNet\\ReceiptInfo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-26T06:14:47.29Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FiscalInfo.cs",
-              "DocumentMoniker": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\FiscalInfo.cs",
-              "RelativeDocumentMoniker": "TokenDotNet\\FiscalInfo.cs",
-              "ToolTip": "C:\\Users\\25200024\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\FiscalInfo.cs",
-              "RelativeToolTip": "TokenDotNet\\FiscalInfo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T09:08:49.455Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "IntegrationHub.cs",
-              "DocumentMoniker": "C:\\Users\\25200397\\source\\repos\\IntegrationHub\\IntegrationHub\\IntegrationHub.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\25200397\\source\\repos\\IntegrationHub\\IntegrationHub\\IntegrationHub.cs",
-              "ToolTip": "C:\\Users\\25200397\\source\\repos\\IntegrationHub\\IntegrationHub\\IntegrationHub.cs",
-              "RelativeToolTip": "..\\..\\..\\..\\25200397\\source\\repos\\IntegrationHub\\IntegrationHub\\IntegrationHub.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAABQAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T12:25:56.914Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "test.cs",
-              "DocumentMoniker": "D:\\Users\\25200397\\OneDrive - Token Finansal Teknolojiler A.S\\Desktop\\ExternalTest\\src\\test.cs",
-              "ToolTip": "D:\\Users\\25200397\\OneDrive - Token Finansal Teknolojiler A.S\\Desktop\\ExternalTest\\src\\test.cs",
-              "ViewState": "AgIAAHEBAAAAAAAAAAAAAIYBAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-26T06:24:27.554Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "test.cs",
-              "DocumentMoniker": "C:\\Users\\25200397\\AppData\\Local\\Temp\\92685cbe-e02d-4629-8725-c47d26428159_Beko DLL v1.0.0.15.zip.159\\Beko DLL v1.0.0.15\\ExternalTest\\src\\test.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\25200397\\AppData\\Local\\Temp\\92685cbe-e02d-4629-8725-c47d26428159_Beko DLL v1.0.0.15.zip.159\\Beko DLL v1.0.0.15\\ExternalTest\\src\\test.cs",
-              "ToolTip": "C:\\Users\\25200397\\AppData\\Local\\Temp\\92685cbe-e02d-4629-8725-c47d26428159_Beko DLL v1.0.0.15.zip.159\\Beko DLL v1.0.0.15\\ExternalTest\\src\\test.cs",
-              "RelativeToolTip": "..\\..\\..\\..\\25200397\\AppData\\Local\\Temp\\92685cbe-e02d-4629-8725-c47d26428159_Beko DLL v1.0.0.15.zip.159\\Beko DLL v1.0.0.15\\ExternalTest\\src\\test.cs",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T10:47:30.99Z",
               "EditorCaption": ""
             }
           ]
