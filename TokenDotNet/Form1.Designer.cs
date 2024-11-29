@@ -456,6 +456,7 @@
             // 
             // disconnect
             // 
+            /*
             this.disconnect.Location = new System.Drawing.Point(213, 250);
             this.disconnect.Name = "disconnect";
             this.disconnect.Size = new System.Drawing.Size(171, 28);
@@ -463,6 +464,7 @@
             this.disconnect.Text = "Bağlantıyı Sonlandır";
             this.disconnect.UseVisualStyleBackColor = true;
             this.disconnect.Click += new System.EventHandler(this.disconnect_communication);
+            */
             // 
             // sendJson
             // 
