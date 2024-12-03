@@ -9,6 +9,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,6 +41,22 @@
               "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Program.cs",
+              "RelativeDocumentMoniker": "TokenDotNet\\Program.cs",
+              "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Program.cs",
+              "RelativeToolTip": "TokenDotNet\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T07:47:33.614Z"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Form1.Designer.cs",
@@ -44,7 +64,7 @@
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.Designer.cs",
               "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.Designer.cs",
               "RelativeToolTip": "TokenDotNet\\Form1.Designer.cs",
-              "ViewState": "AgIAALIAAAAAAAAAAAAAwMUAAABOAAAAAAAAAA==",
+              "ViewState": "AgIAABYBAAAAAAAAAAAAACcBAABYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-18T10:32:27.506Z"
             },
@@ -56,7 +76,7 @@
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
               "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeToolTip": "TokenDotNet\\Form1.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAiwDYAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAAwHYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-10T10:05:36.931Z",
               "EditorCaption": ""

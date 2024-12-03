@@ -13,6 +13,8 @@ using IntegrationHub;
 using static System.Collections.Specialized.BitVector32;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace TokenDotNet
 {
@@ -778,26 +780,52 @@ namespace TokenDotNet
 
         private void exSale_Click(object sender, EventArgs e)
         {
-            string example = "{\r\n  \"UUID\": \"dedddcdf-0938-46b9-b18b-d268bfc2f1fa\",\r\n  \"amount\": 0,\r\n  \"basketID\": \"dcd8e72c-ca4c-4246-8598-bceea8a635ff\",\r\n  \"clientid\": \"com.tokeninc.ecr\",\r\n  \"createdTime\": 1731065762,\r\n  \"customerInfo\": {\r\n    \"name\": \"\",\r\n    \"taxID\": \"68533094750\"\r\n  },\r\n  \"documentType\": 9007,\r\n  \"enableSecondScreen\": false,\r\n  \"firstCheck\": \"\",\r\n  \"id\": 0,\r\n  \"infoReceiptInfo\": {\r\n    \"serialNo\": \"FSD\"\r\n  },\r\n  \"InstanceIdentifier\": \"\",\r\n  \"invoiceCollectionSequentialNo\": \"\",\r\n  \"invoiceID\": \"\",\r\n  \"isPowerCut\": false,\r\n  \"isVoid\": false,\r\n  \"isWayBill\": false,\r\n  \"items\": [\r\n    {\r\n      \"name\": \"Yiyecek\",\r\n      \"price\": 45000,\r\n      \"quantity\": 1000.0,\r\n      \"sectionNo\": 1,\r\n      \"taxPercent\": 1000.0\r\n    }\r\n  ],\r\n  \"packageName\": \"com.tokeninc.ecr\",\r\n  \"paymentCount\": 1,\r\n  \"paymentScreen\": 0,\r\n  \"paymentItems\": [\r\n    {\r\n      \"amount\": 45000.0,\r\n      \"BatchNo\": 0,\r\n      \"currencyId\": 0,\r\n      \"description\": \"Nakit\",\r\n      \"operatorId\": 0,\r\n      \"status\": -1,\r\n      \"taxRate\": -1,\r\n      \"TxnNo\": 0,\r\n      \"type\": 1\r\n    }\r\n  ],\r\n  \"price\": 0,\r\n  \"quantity\": 0,\r\n  \"receiptNo\": \"7\",\r\n  \"resultObject\": {},\r\n  \"sessionID\": \"\",\r\n  \"splitRate\": 0,\r\n  \"state\": 3,\r\n  \"status\": 0,\r\n  \"totalValue\": 0.0,\r\n  \"type\": 0,\r\n  \"uuid\": \"\",\r\n  \"value\": 0.0,\r\n  \"voidPrice\": 0,\r\n  \"voidQuantity\": 0,\r\n  \"zNo\": \"22\"\r\n}";
-            communication.sendBasket(example);
-            //basket.items.Add(new Item
-            //{
-            //    barcode = "",
-            //    name = "GIDA",
-            //    pluNo = 0,
-            //    price = 10000,
-            //    sectionNo = 10,
-            //    taxPercent = 1700,
-            //    type = 0,
-            //    unit = "Adet",
-            //    vatID = 0,
-            //    limit = 0,
-            //    quantity = 1000,
-            //    paymentType = 0
-            //});
-            //updateConsole(constructJsonFromBasket(basket));
-            //updateBasketView();
-            //sendBasketWithPopup();
+
+            if (lbFiscal.Items.Count > 0)
+            {
+                var section = lbFiscal.Items[0] as Section;
+                basket.items.Add(new Item
+                {
+                    barcode = "",
+                    name = section.name,
+                    pluNo = 0,
+                    price = 10000,
+                    sectionNo = section.sectionNo,
+                    taxPercent = section.taxPercent,
+                    type = 0,
+                    unit = "Adet",
+                    vatID = 0,
+                    limit = 0,
+                    quantity = 1000,
+                    paymentType = 0
+                });
+                basket.paymentItems.Add(new PaymentItem
+                {
+                    amount = basket.calculatePrice(),
+                    description = "Tum tutarı nakit olarak odet",
+                    taxRate = 5,
+                    type = 1
+                });
+                updateConsole(constructJsonFromBasket(basket));
+                updateBasketView();
+                sendBasketWithPopup();
+            }
+            else
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Lütfen önce kısımları çekiniz!";
+                string caption = "";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
         }
 
         private void disconnect_communication(object sender, EventArgs e)
