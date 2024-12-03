@@ -11,6 +11,7 @@ namespace TokenDotNet
         public string basketID { get; set; }
         public bool createInvoice { get; set; }
         public int documentType { get; set; }
+        public int taxFreeAmount { get; set; }
         public bool isVoid { get; set; }
         public List<Item> items = new List<Item>();
         public CustomerInfo customerInfo { get; set; }
