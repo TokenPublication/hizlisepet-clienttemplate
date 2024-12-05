@@ -1,4 +1,6 @@
-﻿namespace TokenDotNet
+﻿using System.Windows.Forms;
+
+namespace TokenDotNet
 {
     partial class MainForm
     {
@@ -70,6 +72,9 @@
             this.exSale = new System.Windows.Forms.Button();
             this.disconnect = new System.Windows.Forms.Button();
             this.sendJson = new System.Windows.Forms.Button();
+            this.exSaleSelector = new System.Windows.Forms.ComboBox();
+            
+
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -455,8 +460,7 @@
             this.exSale.Click += new System.EventHandler(this.exSale_Click);
             // 
             // disconnect
-            // 
-            /*
+            //
             this.disconnect.Location = new System.Drawing.Point(213, 250);
             this.disconnect.Name = "disconnect";
             this.disconnect.Size = new System.Drawing.Size(171, 28);
@@ -464,7 +468,6 @@
             this.disconnect.Text = "Bağlantıyı Sonlandır";
             this.disconnect.UseVisualStyleBackColor = true;
             this.disconnect.Click += new System.EventHandler(this.disconnect_communication);
-            */
             // 
             // sendJson
             // 
@@ -475,14 +478,33 @@
             this.sendJson.Text = "Json Gönder";
             this.sendJson.UseVisualStyleBackColor = true;
             this.sendJson.Click += new System.EventHandler(this.handleSendJsonButton);
+            //
+            // exSaleSelector
+            //
+            this.exSaleSelector.Location = new System.Drawing.Point(213, 310);
+            this.exSaleSelector.Name = "exSaleSelector";
+            this.exSaleSelector.Size = new System.Drawing.Size(171, 28);
+            this.exSaleSelector.TabIndex = 44;
+            this.exSaleSelector.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.exSaleSelector.Items.Add("Örnek Satış Seçin");
+            this.exSaleSelector.Items.Add("Avans");
+            //this.exSaleSelector.Items.Add("Fatura Tahsilatı");
+            //this.exSaleSelector.Items.Add("Cari Tahsilat");
+            //this.exSaleSelector.Items.Add("Fatura Bilgi Fişi");
+            //this.exSaleSelector.Items.Add("E-Fatura Bilgi Fişi");
+            //this.exSaleSelector.Items.Add("E-Arşiv Fatura Bilgi Fişi");
+            this.exSaleSelector.SelectedIndex = 0;
+            this.exSaleSelector.SelectedIndexChanged += new System.EventHandler(this.exSaleSelectorHandle);
+
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.exSaleSelector);
             this.Controls.Add(this.sendJson);
-            this.Controls.Add(this.disconnect);
+            //this.Controls.Add(this.disconnect);
             this.Controls.Add(this.exSale);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.pictureBox1);
@@ -575,6 +597,7 @@
         private System.Windows.Forms.Button exSale;
         private System.Windows.Forms.Button disconnect;
         private System.Windows.Forms.Button sendJson;
+        private System.Windows.Forms.ComboBox exSaleSelector;
     }
 }
 

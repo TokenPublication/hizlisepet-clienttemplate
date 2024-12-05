@@ -79,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Basket.cs" />
+    <Compile Include="ExBasketForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExBasketForms.Designer.cs">
+      <DependentUpon>ExBasketForms.cs</DependentUpon>
+    </Compile>
     <Compile Include="FiscalInfo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

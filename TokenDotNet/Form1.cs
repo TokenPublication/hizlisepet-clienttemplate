@@ -274,6 +274,65 @@ namespace TokenDotNet
             }
         }
 
+        private void sendCustomBasket(Basket basket)
+        {
+            //IF DEVICE IS NOT CONNECTED
+            if (!isDeviceConnceted)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
+              
+            int basketStatus = communication.sendBasket(constructJsonFromBasket(basket));
+
+            //SEPET BİLGİSİ POSA ULAŞTI
+            if (basketStatus == 1)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Sepet POS cihazına gönderildi.";
+                string caption = "Sepet Gönderildi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+
+            //SEPET BİLGİSİ POSA ULAŞAMADI
+            if (basketStatus == 0)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlantısı bulunamadı, gönderdiğiniz sepet sıraya eklendi bağlantı sağlandığında gönderilecek.";
+                string caption = "Sepet Sıraya Eklendi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+        }
         private Item castPlusToItem(Plus plus)
         {
             return (new Item
@@ -326,25 +385,8 @@ namespace TokenDotNet
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void getFiscalInfo()
         {
-            if (!isDeviceConnceted)
-            {
-                // Initializes the variables to pass to the MessageBox.Show method.
-                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
-                string caption = "Bağlı Cihaz Yok";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                // Displays the MessageBox.
-                result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    // Closes the parent form.
-                    this.Close();
-                }
-                return;
-            }
             string fiscalInfo = communication.getFiscalInfo();
             updateConsole(fiscalInfo);
 
@@ -371,7 +413,23 @@ namespace TokenDotNet
                     lbSavedItems.Items.Add(item);
                 }
             }
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!isDeviceConnceted)
+            {
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+                if (result == DialogResult.Yes) this.Close();
+
+                return;
+            }
+
+            Thread thread = new Thread(getFiscalInfo);
+            thread.Start();
         }
 
         //pos takılı ama hızlı sepet kapalıyken blockluyor programı
@@ -834,6 +892,46 @@ namespace TokenDotNet
             }
         }
 
+        private void exSaleSelectorHandle(object sender, EventArgs e) 
+        {
+            ComboBox selector = sender as ComboBox;
+            if (selector.SelectedIndex == 0)
+                return;
+            
+            Basket basket = new Basket();
+            basket.basketID = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
+            basket.createInvoice = false;
+            basket.documentType = 0;
+            basket.isVoid = false;
+
+            string selectedItem = selector.SelectedItem as string;
+            switch (selectedItem)
+            {
+                case "Avans":
+                    using (AvansForm avansForm = new AvansForm()) {
+                        DialogResult result = avansForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            CustomerInfo customerInfo = new CustomerInfo();
+                            customerInfo.name = avansForm.name;
+                            customerInfo.taxID = avansForm.taxId;
+
+                            basket.customerInfo = customerInfo;
+                            basket.documentType = 9000;
+                            basket.taxFreeAmount = avansForm.taxFreeAmount;
+
+                            sendCustomBasket(basket);
+                        }
+                    }
+                    break;
+                case "Fatura Tahsilatı":
+                    break;
+                default:
+                    break;
+            }
+
+            selector.SelectedIndex = 0;
+        }
         private void disconnect_communication(object sender, EventArgs e)
         {
             communication.deleteCommunication();
