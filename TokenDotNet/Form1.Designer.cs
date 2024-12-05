@@ -488,11 +488,11 @@ namespace TokenDotNet
             this.exSaleSelector.DropDownStyle = ComboBoxStyle.DropDownList;
             this.exSaleSelector.Items.Add("Örnek Satış Seçin");
             this.exSaleSelector.Items.Add("Avans");
-            //this.exSaleSelector.Items.Add("Fatura Tahsilatı");
-            //this.exSaleSelector.Items.Add("Cari Tahsilat");
-            //this.exSaleSelector.Items.Add("Fatura Bilgi Fişi");
-            //this.exSaleSelector.Items.Add("E-Fatura Bilgi Fişi");
-            //this.exSaleSelector.Items.Add("E-Arşiv Fatura Bilgi Fişi");
+            this.exSaleSelector.Items.Add("Fatura Tahsilatı");
+            this.exSaleSelector.Items.Add("Cari Tahsilat");
+            this.exSaleSelector.Items.Add("Fatura Bilgi Fişi");
+            this.exSaleSelector.Items.Add("E-Fatura Bilgi Fişi");
+            this.exSaleSelector.Items.Add("E-Arşiv Fatura Bilgi Fişi");
             this.exSaleSelector.SelectedIndex = 0;
             this.exSaleSelector.SelectedIndexChanged += new System.EventHandler(this.exSaleSelectorHandle);
 

@@ -17,6 +17,8 @@ namespace TokenDotNet
         public CustomerInfo customerInfo { get; set; }
         public List<PaymentItem> paymentItems = new List<PaymentItem>();
         public Adjust adjust { get; set; }
+        public InfoReceiptInfo infoReceiptInfo { get; set; }
+        public bool isWayBill { get; set; }
 
         public int calculatePrice()
         {

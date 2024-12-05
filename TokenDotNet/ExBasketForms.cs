@@ -10,5 +10,4 @@ using System.Windows.Forms;
 
 namespace TokenDotNet
 {
-    public partial class AvansForm : Form {}
 }

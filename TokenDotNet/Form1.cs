@@ -898,11 +898,11 @@ namespace TokenDotNet
             if (selector.SelectedIndex == 0)
                 return;
             
-            Basket basket = new Basket();
-            basket.basketID = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
-            basket.createInvoice = false;
-            basket.documentType = 0;
-            basket.isVoid = false;
+            Basket exmBasket = new Basket();
+            exmBasket.basketID = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
+            exmBasket.createInvoice = false;
+            exmBasket.documentType = 0;
+            exmBasket.isVoid = false;
 
             string selectedItem = selector.SelectedItem as string;
             switch (selectedItem)
@@ -916,15 +916,81 @@ namespace TokenDotNet
                             customerInfo.name = avansForm.name;
                             customerInfo.taxID = avansForm.taxId;
 
-                            basket.customerInfo = customerInfo;
-                            basket.documentType = 9000;
-                            basket.taxFreeAmount = avansForm.taxFreeAmount;
+                            exmBasket.customerInfo = customerInfo;
+                            exmBasket.documentType = 9000;
+                            exmBasket.taxFreeAmount = avansForm.taxFreeAmount;
 
-                            sendCustomBasket(basket);
+                            sendCustomBasket(exmBasket);
                         }
                     }
                     break;
                 case "Fatura Tahsilatı":
+                    using (FaturaTahsilatForm faturaTahsilatForm = new FaturaTahsilatForm())
+                    {
+                        DialogResult result = faturaTahsilatForm.ShowDialog();
+                        if (result == DialogResult.OK )
+                        {
+                            InfoReceiptInfo infoReceiptInfo = new InfoReceiptInfo();
+                            infoReceiptInfo.companyName = faturaTahsilatForm.companyName;
+                            infoReceiptInfo.documentDate = faturaTahsilatForm.date;
+                            infoReceiptInfo.documentNo = "6226";
+                            infoReceiptInfo.subscriberNo = "6565";
+
+                            exmBasket.infoReceiptInfo = infoReceiptInfo;
+                            exmBasket.documentType = 9001;
+                            exmBasket.taxFreeAmount = faturaTahsilatForm.taxFreeAmount;
+                            exmBasket.items = basket.items;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
+                    break;
+                case "Cari Tahsilat":
+                    using (CariTahsilatForm cariTahsilatForm = new CariTahsilatForm()) 
+                    {
+                        DialogResult result = cariTahsilatForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            CustomerInfo customerInfo = new CustomerInfo();
+                            customerInfo.name = cariTahsilatForm.name;
+                            customerInfo.taxID = cariTahsilatForm.taxId;
+
+                            InfoReceiptInfo infoReceiptInfo = new InfoReceiptInfo();
+                            infoReceiptInfo.companyName = "";
+                            infoReceiptInfo.documentDate = cariTahsilatForm.date;
+                            infoReceiptInfo.documentNo = "568653";
+                            infoReceiptInfo.subscriberNo = "";
+
+                            exmBasket.customerInfo = customerInfo;
+                            exmBasket.infoReceiptInfo = infoReceiptInfo;
+                            exmBasket.documentType = 9002;
+                            exmBasket.taxFreeAmount = cariTahsilatForm.taxFreeAmount;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
+                    break;
+                case string type when type == "Fatura Bilgi Fişi" || type == "E-Fatura Bilgi Fişi" || type == "E-Arşiv Fatura Bilgi Fişi":
+                    using (FaturaBilgiFisiForm faturaBilgiFisiForm = new FaturaBilgiFisiForm())
+                    {
+                        DialogResult result = faturaBilgiFisiForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            CustomerInfo customerInfo = new CustomerInfo();
+                            customerInfo.taxID = faturaBilgiFisiForm.taxId;
+
+                            InfoReceiptInfo infoReceiptInfo = new InfoReceiptInfo();
+                            infoReceiptInfo.serialNo = faturaBilgiFisiForm.serialNo;
+
+                            exmBasket.customerInfo = customerInfo;
+                            exmBasket.infoReceiptInfo = infoReceiptInfo;
+                            exmBasket.items = basket.items;
+                            exmBasket.isWayBill = false;
+                            exmBasket.documentType = (type == "Fatura Bilgi Fişi") ? 9005 : (type == "E-Fatura Bilgi Fişi") ? 9006 : 9007;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
                     break;
                 default:
                     break;
