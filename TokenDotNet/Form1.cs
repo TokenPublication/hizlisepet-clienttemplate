@@ -27,6 +27,11 @@ namespace TokenDotNet
 
         public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
+
+            Console.WriteLine("serialInCallback type: " + type);
+            Console.WriteLine("serialInCallback value: " + value);
+
+
             Control.CheckForIllegalCrossThreadCalls = false;
             string storeValue = string.Copy(value);
 
