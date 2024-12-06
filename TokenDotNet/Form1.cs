@@ -958,8 +958,30 @@ namespace TokenDotNet
         }
         private void disconnect_communication(object sender, EventArgs e)
         {
-            communication.deleteCommunication();
+            try
+            {
+                communication.deleteCommunication();
+                Console.WriteLine("Disconnectinggggg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+
+        private void reConnect_communication(object sender, EventArgs e)
+        {
+            try
+            {
+                communication.reConnect();
+                Console.WriteLine("ReConnectinggggg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
 
         private void handleSendJsonButton(object sender, EventArgs e)
         {
@@ -1066,6 +1088,11 @@ namespace TokenDotNet
         }
 
         private void lbVersion_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void staticlb2_Click(object sender, EventArgs e)
         {
 
         }
