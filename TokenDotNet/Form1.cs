@@ -1053,6 +1053,38 @@ namespace TokenDotNet
             }
         }
 
+        private void handleCancelReceipt(object sender, EventArgs e)
+        {
+            if (!isDeviceConnceted)
+            {
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult _result;
+
+                _result = MessageBox.Show(message, caption, buttons);
+                if (_result == DialogResult.Yes) this.Close();
+
+                return;
+            }
+
+            int activeDeviceIndex = communication.getActiveDeviceIndex();
+            if (activeDeviceIndex == 1)
+            {
+                basket.isVoid = true;
+                sendBasketWithPopup();
+            } 
+            else
+            {
+                string message = "Sadece 300TR ile kullanılabilir";
+                string caption = "Geçersiz Talep";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult _result;
+
+                _result = MessageBox.Show(message, caption, buttons);
+                if (_result == DialogResult.Yes) this.Close();
+            }
+        }
         private void button1_Click_1(object sender, EventArgs e)
         {
 

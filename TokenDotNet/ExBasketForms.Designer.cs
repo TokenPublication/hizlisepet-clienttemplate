@@ -71,6 +71,7 @@ namespace TokenDotNet
             {
                 Text = "Ödeme Gönder",
                 Location = new System.Drawing.Point(160, 180),
+                DialogResult = DialogResult.OK
             };
             sendPaymentButton.Click += (s, e) => {
                 try
@@ -96,12 +97,11 @@ namespace TokenDotNet
                     {
                         taxFreeAmount = _taxFreeAmount;
                     }
-                    (s as Button).DialogResult = DialogResult.OK;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Doğrulama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    (s as Button).DialogResult = DialogResult.None;
+                    (e as FormClosingEventArgs).Cancel = true;
                 }
             };
             this.Controls.Add(sendPaymentButton);
@@ -160,7 +160,7 @@ namespace TokenDotNet
                 Location = new System.Drawing.Point(20, 120),
                 Name = "taxFreeAmountInputLabel",
                 Size = new System.Drawing.Size(64, 16),
-                Text = "Avans Tutarı"
+                Text = "Tahsilat Tutarı"
             };
             TextBox taxFreeAmountInput = new TextBox
             {
@@ -182,6 +182,7 @@ namespace TokenDotNet
             {
                 Text = "Ödeme Gönder",
                 Location = new System.Drawing.Point(160, 180),
+                DialogResult = DialogResult.OK
             };
             sendPaymentButton.Click += (s, e) => {
                 try
@@ -207,12 +208,11 @@ namespace TokenDotNet
                     {
                         taxFreeAmount = _taxFreeAmount;
                     }
-                    (s as Button).DialogResult = DialogResult.OK;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Doğrulama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    (s as Button).DialogResult = DialogResult.None;
+                    (e as FormClosingEventArgs).Cancel = true;
                 }
             };
             this.Controls.Add(sendPaymentButton);
@@ -288,7 +288,7 @@ namespace TokenDotNet
                 Location = new System.Drawing.Point(20, 170),
                 Name = "taxFreeAmountInputLabel",
                 Size = new System.Drawing.Size(64, 16),
-                Text = "Avans Tutarı"
+                Text = "Tahsilat Tutarı"
             };
             TextBox taxFreeAmountInput = new TextBox
             {
@@ -310,6 +310,7 @@ namespace TokenDotNet
             {
                 Text = "Ödeme Gönder",
                 Location = new System.Drawing.Point(160, 230),
+                DialogResult= DialogResult.OK
             };
             sendPaymentButton.Click += (s, e) => {
                 try
@@ -338,12 +339,11 @@ namespace TokenDotNet
                     {
                         taxFreeAmount = _taxFreeAmount;
                     }
-                    (s as Button).DialogResult = DialogResult.OK;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Doğrulama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    (s as Button).DialogResult = DialogResult.None;
+                    (e as FormClosingEventArgs).Cancel = true;
                 }
             };
             this.Controls.Add(sendPaymentButton);

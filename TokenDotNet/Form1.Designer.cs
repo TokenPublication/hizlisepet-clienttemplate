@@ -73,6 +73,7 @@ namespace TokenDotNet
             this.disconnect = new System.Windows.Forms.Button();
             this.sendJson = new System.Windows.Forms.Button();
             this.exSaleSelector = new System.Windows.Forms.ComboBox();
+            this.cancelReceipt = new System.Windows.Forms.Button();
             
 
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -495,13 +496,23 @@ namespace TokenDotNet
             this.exSaleSelector.Items.Add("E-Arşiv Fatura Bilgi Fişi");
             this.exSaleSelector.SelectedIndex = 0;
             this.exSaleSelector.SelectedIndexChanged += new System.EventHandler(this.exSaleSelectorHandle);
-
+            // 
+            // cancelReceipt
+            // 
+            this.cancelReceipt.Location = new System.Drawing.Point(213, 340);
+            this.cancelReceipt.Name = "cancelReceipt";
+            this.cancelReceipt.Size = new System.Drawing.Size(171, 28);
+            this.cancelReceipt.TabIndex = 45;
+            this.cancelReceipt.Text = "Fiş İptal";
+            this.cancelReceipt.UseVisualStyleBackColor = true;
+            this.cancelReceipt.Click += new System.EventHandler(this.handleCancelReceipt);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.cancelReceipt);
             this.Controls.Add(this.exSaleSelector);
             this.Controls.Add(this.sendJson);
             //this.Controls.Add(this.disconnect);
@@ -598,6 +609,7 @@ namespace TokenDotNet
         private System.Windows.Forms.Button disconnect;
         private System.Windows.Forms.Button sendJson;
         private System.Windows.Forms.ComboBox exSaleSelector;
+        private System.Windows.Forms.Button cancelReceipt;
     }
 }
 
