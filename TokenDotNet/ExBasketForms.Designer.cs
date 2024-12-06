@@ -39,6 +39,7 @@ namespace TokenDotNet
             {
                 Location = new System.Drawing.Point(20, 90),
                 Width = 260,
+                MaxLength = 11
             };
             this.Controls.Add(taxIdInputLabel);
             this.Controls.Add(taxIdInput);
@@ -262,6 +263,7 @@ namespace TokenDotNet
             {
                 Location = new System.Drawing.Point(20, 90),
                 Width = 260,
+                MaxLength = 11
             };
             this.Controls.Add(taxIdInputLabel);
             this.Controls.Add(taxIdInput);
@@ -391,6 +393,7 @@ namespace TokenDotNet
             {
                 Location = new System.Drawing.Point(20, 90),
                 Width = 260,
+                MaxLength = 11
             };
             this.Controls.Add(taxIdInputLabel);
             this.Controls.Add(taxIdInput);

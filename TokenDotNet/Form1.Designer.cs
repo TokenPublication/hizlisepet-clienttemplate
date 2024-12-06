@@ -487,7 +487,7 @@ namespace TokenDotNet
             this.exSaleSelector.Size = new System.Drawing.Size(171, 28);
             this.exSaleSelector.TabIndex = 44;
             this.exSaleSelector.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.exSaleSelector.Items.Add("Örnek Satış Seçin");
+            this.exSaleSelector.Items.Add("Örnek Fiş Gönder");
             this.exSaleSelector.Items.Add("Avans");
             this.exSaleSelector.Items.Add("Fatura Tahsilatı");
             this.exSaleSelector.Items.Add("Cari Tahsilat");
