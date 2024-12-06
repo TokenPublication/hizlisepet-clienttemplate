@@ -19,6 +19,7 @@ namespace TokenDotNet
         public Adjust adjust { get; set; }
         public InfoReceiptInfo infoReceiptInfo { get; set; }
         public bool isWayBill { get; set; }
+        public string note { get; set; }
 
         public int calculatePrice()
         {

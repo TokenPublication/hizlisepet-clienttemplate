@@ -74,8 +74,8 @@ namespace TokenDotNet
             this.sendJson = new System.Windows.Forms.Button();
             this.exSaleSelector = new System.Windows.Forms.ComboBox();
             this.cancelReceipt = new System.Windows.Forms.Button();
-            
-
+            this.addNote = new System.Windows.Forms.Button();
+            this.removeNote = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -125,7 +125,7 @@ namespace TokenDotNet
             // 
             // addCustomer
             // 
-            this.addCustomer.Location = new System.Drawing.Point(12, 229);
+            this.addCustomer.Location = new System.Drawing.Point(12, 213);
             this.addCustomer.Name = "addCustomer";
             this.addCustomer.Size = new System.Drawing.Size(171, 28);
             this.addCustomer.TabIndex = 5;
@@ -135,7 +135,7 @@ namespace TokenDotNet
             // 
             // removeCustomer
             // 
-            this.removeCustomer.Location = new System.Drawing.Point(12, 263);
+            this.removeCustomer.Location = new System.Drawing.Point(12, 242);
             this.removeCustomer.Name = "removeCustomer";
             this.removeCustomer.Size = new System.Drawing.Size(171, 28);
             this.removeCustomer.TabIndex = 6;
@@ -145,7 +145,7 @@ namespace TokenDotNet
             // 
             // removePaymentPlan
             // 
-            this.removePaymentPlan.Location = new System.Drawing.Point(12, 343);
+            this.removePaymentPlan.Location = new System.Drawing.Point(12, 304);
             this.removePaymentPlan.Name = "removePaymentPlan";
             this.removePaymentPlan.Size = new System.Drawing.Size(171, 28);
             this.removePaymentPlan.TabIndex = 8;
@@ -155,7 +155,7 @@ namespace TokenDotNet
             // 
             // addPaymentPlan
             // 
-            this.addPaymentPlan.Location = new System.Drawing.Point(12, 309);
+            this.addPaymentPlan.Location = new System.Drawing.Point(12, 276);
             this.addPaymentPlan.Name = "addPaymentPlan";
             this.addPaymentPlan.Size = new System.Drawing.Size(171, 28);
             this.addPaymentPlan.TabIndex = 7;
@@ -165,7 +165,7 @@ namespace TokenDotNet
             // 
             // addSurcharge
             // 
-            this.addSurcharge.Location = new System.Drawing.Point(12, 429);
+            this.addSurcharge.Location = new System.Drawing.Point(12, 433);
             this.addSurcharge.Name = "addSurcharge";
             this.addSurcharge.Size = new System.Drawing.Size(171, 28);
             this.addSurcharge.TabIndex = 10;
@@ -175,7 +175,7 @@ namespace TokenDotNet
             // 
             // addDiscount
             // 
-            this.addDiscount.Location = new System.Drawing.Point(12, 395);
+            this.addDiscount.Location = new System.Drawing.Point(12, 404);
             this.addDiscount.Name = "addDiscount";
             this.addDiscount.Size = new System.Drawing.Size(171, 28);
             this.addDiscount.TabIndex = 9;
@@ -195,7 +195,7 @@ namespace TokenDotNet
             // 
             // sendCash
             // 
-            this.sendCash.Location = new System.Drawing.Point(12, 150);
+            this.sendCash.Location = new System.Drawing.Point(12, 146);
             this.sendCash.Name = "sendCash";
             this.sendCash.Size = new System.Drawing.Size(171, 28);
             this.sendCash.TabIndex = 12;
@@ -205,7 +205,7 @@ namespace TokenDotNet
             // 
             // sendCard
             // 
-            this.sendCard.Location = new System.Drawing.Point(12, 184);
+            this.sendCard.Location = new System.Drawing.Point(12, 176);
             this.sendCard.Name = "sendCard";
             this.sendCard.Size = new System.Drawing.Size(171, 28);
             this.sendCard.TabIndex = 13;
@@ -215,25 +215,17 @@ namespace TokenDotNet
             // 
             // addWaterToBasket
             // 
-            this.addWaterToBasket.Location = new System.Drawing.Point(213, 347);
+            this.addWaterToBasket.Location = new System.Drawing.Point(0, 0);
             this.addWaterToBasket.Name = "addWaterToBasket";
-            this.addWaterToBasket.Size = new System.Drawing.Size(171, 28);
-            this.addWaterToBasket.TabIndex = 14;
-            this.addWaterToBasket.Text = "Su ekle";
-            this.addWaterToBasket.UseVisualStyleBackColor = true;
-            this.addWaterToBasket.Visible = false;
-            this.addWaterToBasket.Click += new System.EventHandler(this.addAppleToBasket_Click);
+            this.addWaterToBasket.Size = new System.Drawing.Size(75, 23);
+            this.addWaterToBasket.TabIndex = 49;
             // 
             // addPearToBasket
             // 
-            this.addPearToBasket.Location = new System.Drawing.Point(213, 381);
+            this.addPearToBasket.Location = new System.Drawing.Point(0, 0);
             this.addPearToBasket.Name = "addPearToBasket";
-            this.addPearToBasket.Size = new System.Drawing.Size(171, 28);
-            this.addPearToBasket.TabIndex = 15;
-            this.addPearToBasket.Text = "Armut ekle";
-            this.addPearToBasket.UseVisualStyleBackColor = true;
-            this.addPearToBasket.Visible = false;
-            this.addPearToBasket.Click += new System.EventHandler(this.addPearToBasket_Click);
+            this.addPearToBasket.Size = new System.Drawing.Size(75, 23);
+            this.addPearToBasket.TabIndex = 48;
             // 
             // deleteLastItemInBasket
             // 
@@ -461,13 +453,14 @@ namespace TokenDotNet
             this.exSale.Click += new System.EventHandler(this.exSale_Click);
             // 
             // disconnect
-            //
+            // 
             this.disconnect.Location = new System.Drawing.Point(213, 250);
             this.disconnect.Name = "disconnect";
             this.disconnect.Size = new System.Drawing.Size(171, 28);
             this.disconnect.TabIndex = 42;
             this.disconnect.Text = "Bağlantıyı Sonlandır";
             this.disconnect.UseVisualStyleBackColor = true;
+            this.disconnect.Visible = false;
             this.disconnect.Click += new System.EventHandler(this.disconnect_communication);
             // 
             // sendJson
@@ -479,12 +472,12 @@ namespace TokenDotNet
             this.sendJson.Text = "Json Gönder";
             this.sendJson.UseVisualStyleBackColor = true;
             this.sendJson.Click += new System.EventHandler(this.handleSendJsonButton);
-            //
+            // 
             // exSaleSelector
-            //
+            // 
             this.exSaleSelector.Location = new System.Drawing.Point(213, 310);
             this.exSaleSelector.Name = "exSaleSelector";
-            this.exSaleSelector.Size = new System.Drawing.Size(171, 28);
+            this.exSaleSelector.Size = new System.Drawing.Size(171, 24);
             this.exSaleSelector.TabIndex = 44;
             this.exSaleSelector.DropDownStyle = ComboBoxStyle.DropDownList;
             this.exSaleSelector.Items.Add("Örnek Fiş Gönder");
@@ -507,15 +500,37 @@ namespace TokenDotNet
             this.cancelReceipt.UseVisualStyleBackColor = true;
             this.cancelReceipt.Click += new System.EventHandler(this.handleCancelReceipt);
             // 
+            // addNote
+            // 
+            this.addNote.Location = new System.Drawing.Point(12, 338);
+            this.addNote.Name = "addNote";
+            this.addNote.Size = new System.Drawing.Size(171, 28);
+            this.addNote.TabIndex = 46;
+            this.addNote.Text = "Not ekle";
+            this.addNote.UseVisualStyleBackColor = true;
+            this.addNote.Click += new System.EventHandler(this.handleAddNote);
+            // 
+            // removeNote
+            // 
+            this.removeNote.Location = new System.Drawing.Point(12, 366);
+            this.removeNote.Name = "removeNote";
+            this.removeNote.Size = new System.Drawing.Size(171, 28);
+            this.removeNote.TabIndex = 47;
+            this.removeNote.Text = "Notu kaldır";
+            this.removeNote.UseVisualStyleBackColor = true;
+            this.removeNote.Click += new System.EventHandler(this.handleRemoveNote);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 515);
+            this.Controls.Add(this.addNote);
+            this.Controls.Add(this.removeNote);
             this.Controls.Add(this.cancelReceipt);
             this.Controls.Add(this.exSaleSelector);
             this.Controls.Add(this.sendJson);
-            //this.Controls.Add(this.disconnect);
+            this.Controls.Add(this.disconnect);
             this.Controls.Add(this.exSale);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.pictureBox1);
@@ -610,6 +625,8 @@ namespace TokenDotNet
         private System.Windows.Forms.Button sendJson;
         private System.Windows.Forms.ComboBox exSaleSelector;
         private System.Windows.Forms.Button cancelReceipt;
+        private System.Windows.Forms.Button addNote;
+        private System.Windows.Forms.Button removeNote;
     }
 }
 
