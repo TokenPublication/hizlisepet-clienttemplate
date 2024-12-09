@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace TokenDotNet
 {
@@ -28,8 +29,8 @@ namespace TokenDotNet
         public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
 
-            Console.WriteLine("serialInCallback type: " + type);
-            Console.WriteLine("serialInCallback value: " + value);
+            Console.WriteLine("TokenDotNet serialInCallback type: " + type);
+            Console.WriteLine("TokenDotNet serialInCallback value: " + value);
 
 
             Control.CheckForIllegalCrossThreadCalls = false;
@@ -94,8 +95,11 @@ namespace TokenDotNet
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
+
             string idcpy = string.Copy(id);
-            Console.WriteLine("Device ID: " + id);
+            Console.WriteLine("TokenDotNet deviceStateCallback isConnected: " + isConnected);
+            Console.WriteLine("TokenDotNet deviceStateCallback fiscalId: " + id);
+
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
@@ -388,6 +392,11 @@ namespace TokenDotNet
         private void getFiscalInfo()
         {
             string fiscalInfo = communication.getFiscalInfo();
+
+            if (fiscalInfo == null || fiscalInfo == "") {
+                Console.WriteLine("FISCAL INFO IS NULL");
+            }
+
             updateConsole(fiscalInfo);
 
             lbFiscal.DisplayMember = "name";
