@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace TokenDotNet
 {
@@ -28,8 +29,8 @@ namespace TokenDotNet
         public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
 
-            Console.WriteLine("serialInCallback type: " + type);
-            Console.WriteLine("serialInCallback value: " + value);
+            Console.WriteLine("TokenDotNet serialInCallback type: " + type);
+            Console.WriteLine("TokenDotNet serialInCallback value: " + value);
 
 
             Control.CheckForIllegalCrossThreadCalls = false;
@@ -94,8 +95,11 @@ namespace TokenDotNet
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
+
             string idcpy = string.Copy(id);
-            Console.WriteLine("Device ID: " + id);
+            Console.WriteLine("TokenDotNet deviceStateCallback isConnected: " + isConnected);
+            Console.WriteLine("TokenDotNet deviceStateCallback fiscalId: " + id);
+
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
@@ -388,6 +392,11 @@ namespace TokenDotNet
         private void getFiscalInfo()
         {
             string fiscalInfo = communication.getFiscalInfo();
+
+            if (fiscalInfo == null || fiscalInfo == "") {
+                Console.WriteLine("FISCAL INFO IS NULL");
+            }
+
             updateConsole(fiscalInfo);
 
             lbFiscal.DisplayMember = "name";
@@ -958,8 +967,30 @@ namespace TokenDotNet
         }
         private void disconnect_communication(object sender, EventArgs e)
         {
-            communication.deleteCommunication();
+            try
+            {
+                communication.deleteCommunication();
+                Console.WriteLine("Disconnectinggggg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+
+        private void reConnect_communication(object sender, EventArgs e)
+        {
+            try
+            {
+                communication.reConnect();
+                Console.WriteLine("ReConnectinggggg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
 
         private void handleSendJsonButton(object sender, EventArgs e)
         {
@@ -1066,6 +1097,11 @@ namespace TokenDotNet
         }
 
         private void lbVersion_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void staticlb2_Click(object sender, EventArgs e)
         {
 
         }
