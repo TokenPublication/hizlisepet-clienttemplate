@@ -475,7 +475,6 @@ namespace TokenDotNet
                     string json = constructJsonFromPayment(new PaymentItem
                     {
                         amount = amount,
-                        description = "nakit ödeme",
                         taxRate = 5,
                         type = 1
                     });
@@ -486,7 +485,6 @@ namespace TokenDotNet
                     basket.paymentItems.Add(new PaymentItem
                     {
                         amount = basket.calculatePrice(),
-                        description = "Tum tutarı nakit olarak odet",
                         taxRate = 5,
                         type = 1
                     });
@@ -527,7 +525,7 @@ namespace TokenDotNet
                     string json = constructJsonFromPayment(new PaymentItem
                     {
                         amount = amount,
-                        description = "kart ödeme",
+                        description = "KART",
                         taxRate = 5,
                         type = 3
                     });
@@ -538,7 +536,7 @@ namespace TokenDotNet
                     basket.paymentItems.Add(new PaymentItem
                     {
                         amount = basket.calculatePrice(),
-                        description = "Tum tutari kart olarak odet",
+                        description = "KART",
                         taxRate = 5,
                         type = 3
                     });
@@ -589,7 +587,7 @@ namespace TokenDotNet
         {
             basket.paymentItems.Add(new PaymentItem
             {
-                description = "yarısı nakit",
+                description = "NAKIT",
                 amount = basket.calculatePrice()/2,
                 type = 1,
                 taxRate = 5
@@ -833,10 +831,12 @@ namespace TokenDotNet
                 basket.paymentItems.Add(new PaymentItem
                 {
                     amount = basket.calculatePrice(),
-                    description = "Tum tutarı nakit olarak odet",
+                    description = "NAKIT",
                     taxRate = 5,
                     type = 1
                 });
+                Console.WriteLine("Örnek satış");
+                Console.WriteLine(constructJsonFromBasket(basket));
                 updateConsole(constructJsonFromBasket(basket));
                 updateBasketView();
                 sendBasketWithPopup();
