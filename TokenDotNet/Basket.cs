@@ -87,7 +87,6 @@ namespace TokenDotNet
         public string description { get; set; } = "NAKIT";
         public int amount { get; set; }  // Amount is in minor units
         public int type { get; set; }
-        public int taxRate { get; set; }
     }
 
     public class Adjust

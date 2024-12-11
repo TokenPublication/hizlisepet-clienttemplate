@@ -28,11 +28,6 @@ namespace TokenDotNet
 
         public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
-
-            Console.WriteLine("TokenDotNet serialInCallback type: " + type);
-            Console.WriteLine("TokenDotNet serialInCallback value: " + value);
-
-
             Control.CheckForIllegalCrossThreadCalls = false;
             string storeValue = string.Copy(value);
 
@@ -61,7 +56,6 @@ namespace TokenDotNet
                 // Initializes the variables to pass to the MessageBox.Show method.
                 try
                 {
-                    Console.WriteLine("DATA FROM C++ IS: " + storeValue);
                     ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
                     string message = "";
                     if (receiptInfo.status == 0)
@@ -84,13 +78,22 @@ namespace TokenDotNet
                         // Closes the parent form.
                         this.Close();
                     }
-                                        Console.WriteLine("DATA FROM C++ IS: " + storeValue);
                 }
                 catch
                 {
                     Console.WriteLine("ERROR");
                 }
             }
+
+
+            Console.WriteLine("");
+            Console.WriteLine("TokenDotNet serialInCallback type: " + type);
+            Console.WriteLine("");
+            Console.WriteLine("TokenDotNet serialInCallback value: " + storeValue);
+            Console.WriteLine("");
+            Console.WriteLine("TokenDotNet serialInCallback basket: " + constructJsonFromBasket(basket));
+            Console.WriteLine("");
+
         }
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
@@ -475,7 +478,6 @@ namespace TokenDotNet
                     string json = constructJsonFromPayment(new PaymentItem
                     {
                         amount = amount,
-                        taxRate = 5,
                         type = 1
                     });
                     communication.sendPayment(json);
@@ -485,7 +487,6 @@ namespace TokenDotNet
                     basket.paymentItems.Add(new PaymentItem
                     {
                         amount = basket.calculatePrice(),
-                        taxRate = 5,
                         type = 1
                     });
                 
@@ -526,7 +527,6 @@ namespace TokenDotNet
                     {
                         amount = amount,
                         description = "KART",
-                        taxRate = 5,
                         type = 3
                     });
                     communication.sendPayment(json);
@@ -537,7 +537,6 @@ namespace TokenDotNet
                     {
                         amount = basket.calculatePrice(),
                         description = "KART",
-                        taxRate = 5,
                         type = 3
                     });
 
@@ -590,15 +589,13 @@ namespace TokenDotNet
                 description = "NAKIT",
                 amount = basket.calculatePrice()/2,
                 type = 1,
-                taxRate = 5
             });
 
             basket.paymentItems.Add(new PaymentItem
             {
-                description = "yarısı kredi kartı",
+                description = "KREDI KARTI",
                 amount = basket.calculatePrice()/2,
                 type = 3,
-                taxRate = 5
             });
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
@@ -832,7 +829,6 @@ namespace TokenDotNet
                 {
                     amount = basket.calculatePrice(),
                     description = "NAKIT",
-                    taxRate = 5,
                     type = 1
                 });
                 Console.WriteLine("Örnek satış");
