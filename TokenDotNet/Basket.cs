@@ -8,14 +8,18 @@ namespace TokenDotNet
 {
     public class Basket
     {
-        public string basketID { get; set; }
+        public string basketID { get; set; } = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
         public bool createInvoice { get; set; }
         public int documentType { get; set; }
+        public int taxFreeAmount { get; set; }
         public bool isVoid { get; set; }
         public List<Item> items = new List<Item>();
         public CustomerInfo customerInfo { get; set; }
         public List<PaymentItem> paymentItems = new List<PaymentItem>();
         public Adjust adjust { get; set; }
+        public InfoReceiptInfo infoReceiptInfo { get; set; }
+        public bool isWayBill { get; set; }
+        public string note { get; set; }
 
         public int calculatePrice()
         {
@@ -80,10 +84,9 @@ namespace TokenDotNet
 
     public class PaymentItem
     {
-        public string description { get; set; }
+        public string description { get; set; } = "NAKIT";
         public int amount { get; set; }  // Amount is in minor units
         public int type { get; set; }
-        public int taxRate { get; set; }
     }
 
     public class Adjust

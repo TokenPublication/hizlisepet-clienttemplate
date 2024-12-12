@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace TokenDotNet
 {
@@ -55,7 +56,6 @@ namespace TokenDotNet
                 // Initializes the variables to pass to the MessageBox.Show method.
                 try
                 {
-                    Console.WriteLine("DATA FROM C++ IS: " + storeValue);
                     ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
                     string message = "";
                     if (receiptInfo.status == 0)
@@ -78,19 +78,31 @@ namespace TokenDotNet
                         // Closes the parent form.
                         this.Close();
                     }
-                                        Console.WriteLine("DATA FROM C++ IS: " + storeValue);
                 }
                 catch
                 {
                     Console.WriteLine("ERROR");
                 }
             }
+
+
+            Console.WriteLine("");
+            Console.WriteLine("TokenDotNet serialInCallback type: " + type);
+            Console.WriteLine("");
+            Console.WriteLine("TokenDotNet serialInCallback value: " + storeValue);
+            Console.WriteLine("");
+            Console.WriteLine("TokenDotNet serialInCallback basket: " + constructJsonFromBasket(basket));
+            Console.WriteLine("");
+
         }
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
+
             string idcpy = string.Copy(id);
-            Console.WriteLine("Device ID: " + id);
+            Console.WriteLine("TokenDotNet deviceStateCallback isConnected: " + isConnected);
+            Console.WriteLine("TokenDotNet deviceStateCallback fiscalId: " + id);
+
             Control.CheckForIllegalCrossThreadCalls = false;
             if (isConnected)
             {
@@ -269,6 +281,65 @@ namespace TokenDotNet
             }
         }
 
+        private void sendCustomBasket(Basket basket)
+        {
+            //IF DEVICE IS NOT CONNECTED
+            if (!isDeviceConnceted)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
+              
+            int basketStatus = communication.sendBasket(constructJsonFromBasket(basket));
+
+            //SEPET BİLGİSİ POSA ULAŞTI
+            if (basketStatus == 1)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "Sepet POS cihazına gönderildi.";
+                string caption = "Sepet Gönderildi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+
+            //SEPET BİLGİSİ POSA ULAŞAMADI
+            if (basketStatus == 0)
+            {
+                // Initializes the variables to pass to the MessageBox.Show method.
+                string message = "POS cihazı bağlantısı bulunamadı, gönderdiğiniz sepet sıraya eklendi bağlantı sağlandığında gönderilecek.";
+                string caption = "Sepet Sıraya Eklendi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+            }
+        }
         private Item castPlusToItem(Plus plus)
         {
             return (new Item
@@ -321,26 +392,14 @@ namespace TokenDotNet
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void getFiscalInfo()
         {
-            if (!isDeviceConnceted)
-            {
-                // Initializes the variables to pass to the MessageBox.Show method.
-                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
-                string caption = "Bağlı Cihaz Yok";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                // Displays the MessageBox.
-                result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    // Closes the parent form.
-                    this.Close();
-                }
-                return;
-            }
             string fiscalInfo = communication.getFiscalInfo();
+
+            if (fiscalInfo == null || fiscalInfo == "") {
+                Console.WriteLine("FISCAL INFO IS NULL");
+            }
+
             updateConsole(fiscalInfo);
 
             lbFiscal.DisplayMember = "name";
@@ -366,7 +425,23 @@ namespace TokenDotNet
                     lbSavedItems.Items.Add(item);
                 }
             }
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!isDeviceConnceted)
+            {
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+                if (result == DialogResult.Yes) this.Close();
+
+                return;
+            }
+
+            Thread thread = new Thread(getFiscalInfo);
+            thread.Start();
         }
 
         //pos takılı ama hızlı sepet kapalıyken blockluyor programı
@@ -403,8 +478,6 @@ namespace TokenDotNet
                     string json = constructJsonFromPayment(new PaymentItem
                     {
                         amount = amount,
-                        description = "nakit ödeme",
-                        taxRate = 5,
                         type = 1
                     });
                     communication.sendPayment(json);
@@ -414,8 +487,6 @@ namespace TokenDotNet
                     basket.paymentItems.Add(new PaymentItem
                     {
                         amount = basket.calculatePrice(),
-                        description = "Tum tutarı nakit olarak odet",
-                        taxRate = 5,
                         type = 1
                     });
                 
@@ -455,8 +526,7 @@ namespace TokenDotNet
                     string json = constructJsonFromPayment(new PaymentItem
                     {
                         amount = amount,
-                        description = "kart ödeme",
-                        taxRate = 5,
+                        description = "KART",
                         type = 3
                     });
                     communication.sendPayment(json);
@@ -466,8 +536,7 @@ namespace TokenDotNet
                     basket.paymentItems.Add(new PaymentItem
                     {
                         amount = basket.calculatePrice(),
-                        description = "Tum tutari kart olarak odet",
-                        taxRate = 5,
+                        description = "KART",
                         type = 3
                     });
 
@@ -517,18 +586,16 @@ namespace TokenDotNet
         {
             basket.paymentItems.Add(new PaymentItem
             {
-                description = "yarısı nakit",
+                description = "NAKIT",
                 amount = basket.calculatePrice()/2,
                 type = 1,
-                taxRate = 5
             });
 
             basket.paymentItems.Add(new PaymentItem
             {
-                description = "yarısı kredi kartı",
+                description = "KREDI KARTI",
                 amount = basket.calculatePrice()/2,
                 type = 3,
-                taxRate = 5
             });
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
@@ -570,48 +637,6 @@ namespace TokenDotNet
         private void removeDiscount_Click(object sender, EventArgs e)
         {
             basket.adjust = null;
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
-        }
-
-        private void addAppleToBasket_Click(object sender, EventArgs e)
-        {
-            basket.items.Add(new Item
-            {
-                barcode = "",
-                name = "Su",
-                pluNo = 0,
-                price = 500,
-                sectionNo = 1,
-                taxPercent = 1000,
-                type = 0,
-                unit = "Adet",
-                vatID = 0,
-                limit = 0,
-                quantity = 1000,
-                paymentType = 0
-            });
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
-        }
-
-        private void addPearToBasket_Click(object sender, EventArgs e)
-        {
-            basket.items.Add(new Item
-            {
-                barcode = "",
-                name = "Armut Ülker",
-                pluNo = 0,
-                price = 1500,
-                sectionNo = 1,
-                taxPercent = 1000,
-                type = 0,
-                unit = "Adet",
-                vatID = 0,
-                limit = 0,
-                quantity = 1000,
-                paymentType = 0
-            });
             updateConsole(constructJsonFromBasket(basket));
             updateBasketView();
         }
@@ -803,10 +828,11 @@ namespace TokenDotNet
                 basket.paymentItems.Add(new PaymentItem
                 {
                     amount = basket.calculatePrice(),
-                    description = "Tum tutarı nakit olarak odet",
-                    taxRate = 5,
+                    description = "NAKIT",
                     type = 1
                 });
+                Console.WriteLine("Örnek satış");
+                Console.WriteLine(constructJsonFromBasket(basket));
                 updateConsole(constructJsonFromBasket(basket));
                 updateBasketView();
                 sendBasketWithPopup();
@@ -829,14 +855,142 @@ namespace TokenDotNet
             }
         }
 
+        private void exSaleSelectorHandle(object sender, EventArgs e) 
+        {
+            ComboBox selector = sender as ComboBox;
+            if (selector.SelectedIndex == 0)
+                return;
+            
+            Basket exmBasket = new Basket();
+            exmBasket.basketID = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
+            exmBasket.createInvoice = false;
+            exmBasket.documentType = 0;
+            exmBasket.isVoid = false;
+
+            string selectedItem = selector.SelectedItem as string;
+            switch (selectedItem)
+            {
+                case "Avans":
+                    using (AvansForm avansForm = new AvansForm()) {
+                        DialogResult result = avansForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            CustomerInfo customerInfo = new CustomerInfo();
+                            customerInfo.name = avansForm.name;
+                            customerInfo.taxID = avansForm.taxId;
+
+                            exmBasket.customerInfo = customerInfo;
+                            exmBasket.documentType = 9000;
+                            exmBasket.taxFreeAmount = avansForm.taxFreeAmount;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
+                    break;
+                case "Fatura Tahsilatı":
+                    using (FaturaTahsilatForm faturaTahsilatForm = new FaturaTahsilatForm())
+                    {
+                        DialogResult result = faturaTahsilatForm.ShowDialog();
+                        if (result == DialogResult.OK )
+                        {
+                            InfoReceiptInfo infoReceiptInfo = new InfoReceiptInfo();
+                            infoReceiptInfo.companyName = faturaTahsilatForm.companyName;
+                            infoReceiptInfo.documentDate = faturaTahsilatForm.date;
+                            infoReceiptInfo.documentNo = "6226";
+                            infoReceiptInfo.subscriberNo = "6565";
+
+                            exmBasket.infoReceiptInfo = infoReceiptInfo;
+                            exmBasket.documentType = 9001;
+                            exmBasket.taxFreeAmount = faturaTahsilatForm.taxFreeAmount;
+                            exmBasket.items = basket.items;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
+                    break;
+                case "Cari Tahsilat":
+                    using (CariTahsilatForm cariTahsilatForm = new CariTahsilatForm()) 
+                    {
+                        DialogResult result = cariTahsilatForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            CustomerInfo customerInfo = new CustomerInfo();
+                            customerInfo.name = cariTahsilatForm.name;
+                            customerInfo.taxID = cariTahsilatForm.taxId;
+
+                            InfoReceiptInfo infoReceiptInfo = new InfoReceiptInfo();
+                            infoReceiptInfo.companyName = "";
+                            infoReceiptInfo.documentDate = cariTahsilatForm.date;
+                            infoReceiptInfo.documentNo = "568653";
+                            infoReceiptInfo.subscriberNo = "";
+
+                            exmBasket.customerInfo = customerInfo;
+                            exmBasket.infoReceiptInfo = infoReceiptInfo;
+                            exmBasket.documentType = 9002;
+                            exmBasket.taxFreeAmount = cariTahsilatForm.taxFreeAmount;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
+                    break;
+                case string type when type == "Fatura Bilgi Fişi" || type == "E-Fatura Bilgi Fişi" || type == "E-Arşiv Fatura Bilgi Fişi":
+                    using (FaturaBilgiFisiForm faturaBilgiFisiForm = new FaturaBilgiFisiForm())
+                    {
+                        DialogResult result = faturaBilgiFisiForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            CustomerInfo customerInfo = new CustomerInfo();
+                            customerInfo.taxID = faturaBilgiFisiForm.taxId;
+
+                            InfoReceiptInfo infoReceiptInfo = new InfoReceiptInfo();
+                            infoReceiptInfo.serialNo = faturaBilgiFisiForm.serialNo;
+
+                            exmBasket.customerInfo = customerInfo;
+                            exmBasket.infoReceiptInfo = infoReceiptInfo;
+                            exmBasket.items = basket.items;
+                            exmBasket.isWayBill = false;
+                            exmBasket.documentType = (type == "Fatura Bilgi Fişi") ? 9005 : (type == "E-Fatura Bilgi Fişi") ? 9006 : 9007;
+
+                            sendCustomBasket(exmBasket);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            selector.SelectedIndex = 0;
+        }
         private void disconnect_communication(object sender, EventArgs e)
         {
-            communication.deleteCommunication();
+            try
+            {
+                communication.deleteCommunication();
+                Console.WriteLine("Disconnectinggggg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+
+        private void reConnect_communication(object sender, EventArgs e)
+        {
+            try
+            {
+                communication.reConnect();
+                Console.WriteLine("ReConnectinggggg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
 
         private void handleSendJsonButton(object sender, EventArgs e)
         {
-            using (PopupForm popup = new PopupForm())
+            using (SendJsonForm popup = new SendJsonForm())
             {
 
                 DialogResult result = popup.ShowDialog();
@@ -884,6 +1038,55 @@ namespace TokenDotNet
             }
         }
 
+        private void handleCancelReceipt(object sender, EventArgs e)
+        {
+            if (!isDeviceConnceted)
+            {
+                string message = "POS cihazı bağlayıp tekrar deneyiniz.";
+                string caption = "Bağlı Cihaz Yok";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult _result;
+
+                _result = MessageBox.Show(message, caption, buttons);
+                if (_result == DialogResult.Yes) this.Close();
+
+                return;
+            }
+
+            int activeDeviceIndex = communication.getActiveDeviceIndex();
+            if (activeDeviceIndex == 1)
+            {
+                basket.isVoid = true;
+                sendBasketWithPopup();
+            } 
+            else
+            {
+                string message = "Sadece 300TR ile kullanılabilir";
+                string caption = "Geçersiz Talep";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult _result;
+
+                _result = MessageBox.Show(message, caption, buttons);
+                if (_result == DialogResult.Yes) this.Close();
+            }
+        }
+
+        private void handleAddNote(object sender, EventArgs e) 
+        {
+            using (AddNoteForm addNoteForm = new AddNoteForm())
+            {
+                DialogResult result = addNoteForm.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    basket.note = addNoteForm.UserInput;
+                }
+            }  
+        }
+
+        private void handleRemoveNote(object sender, EventArgs e) 
+        {
+            basket.note = null;
+        }
         private void button1_Click_1(object sender, EventArgs e)
         {
 
@@ -893,13 +1096,18 @@ namespace TokenDotNet
         {
 
         }
+
+        private void staticlb2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
-    public partial class PopupForm : Form
+    public partial class SendJsonForm : Form
     {
         public string UserInput { get; private set; }
 
-        public PopupForm()
+        public SendJsonForm()
         {
 
             TextBox inputTextBox = new TextBox
@@ -946,6 +1154,49 @@ namespace TokenDotNet
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterParent;
             this.ClientSize = new System.Drawing.Size(300, 360);
+        }
+    }
+
+    public partial class AddNoteForm : Form
+    {
+        public string UserInput { get; private set; }
+
+        public AddNoteForm()
+        {
+
+            TextBox inputTextBox = new TextBox
+            {
+                Location = new System.Drawing.Point(20, 20),
+                Width = 260,
+                Height = 260,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            this.Controls.Add(inputTextBox);
+
+            Button cancelButton = new Button
+            {
+                Text = "İptal",
+                Location = new System.Drawing.Point(40, 300),
+                DialogResult = DialogResult.Cancel
+            };
+            this.Controls.Add(cancelButton);
+
+            Button sendPaymentButton = new Button
+            {
+                Text = "Not Ekle",
+                Location = new System.Drawing.Point(120, 300),
+                DialogResult = DialogResult.OK,
+            };
+            sendPaymentButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            this.Controls.Add(sendPaymentButton);
+
+
+            this.Text = "Not Ekle";
+            this.CancelButton = cancelButton;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.ClientSize = new System.Drawing.Size(300, 340);
         }
     }
 }
