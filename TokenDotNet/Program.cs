@@ -13,7 +13,7 @@ namespace TokenDotNet
         /// The main entry point for the application.
         /// </summary>
         /// 
-        public static string version = "Version = 2.0.0";
+        public static string version = "Version = 2.1.0";
         
         
         public static IntegrationHub.POSCommunication communication = IntegrationHub.POSCommunication.getInstance("TOKEN FINTECH");

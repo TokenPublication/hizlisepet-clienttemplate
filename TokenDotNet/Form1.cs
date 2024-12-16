@@ -28,46 +28,17 @@ namespace TokenDotNet
 
         public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
-            Control.CheckForIllegalCrossThreadCalls = false;
-            string storeValue = string.Copy(value);
+            Task.Run(() => {
 
-            updateConsole(storeValue);
+                string storeValue = string.Copy(value);
 
-            //BASKET PROCESS ERROR
-            if(type == 9)
-            {
-                string message = "Sepet POS tarafından işlenemedi lütfen POS uygulamasının açık olduğuna emin olup tekrar deneyiniz!";
-                string caption = "Sepet İşlenemedi";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
+                updateConsole(storeValue);
 
-                // Displays the MessageBox.
-                result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                //BASKET PROCESS ERROR
+                if (type == 9)
                 {
-                    // Closes the parent form.
-                    this.Close();
-                }
-            }
-
-            //SALE INFORMATION
-            if(type == 3)
-            {
-                // Initializes the variables to pass to the MessageBox.Show method.
-                try
-                {
-                    ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
-                    string message = "";
-                    if (receiptInfo.status == 0)
-                    {
-                        message = "Ödeme başarılı!";
-                        clearBasket();
-                    }
-                    else
-                    {
-                        message = "Ödeme başarısız";
-                    }
-                    string caption = "Ödeme bilgisi alındı";
+                    string message = "Sepet POS tarafından işlenemedi lütfen POS uygulamasının açık olduğuna emin olup tekrar deneyiniz!";
+                    string caption = "Sepet İşlenemedi";
                     MessageBoxButtons buttons = MessageBoxButtons.OK;
                     DialogResult result;
 
@@ -79,56 +50,90 @@ namespace TokenDotNet
                         this.Close();
                     }
                 }
-                catch
+
+                //SALE INFORMATION
+                if (type == 3)
                 {
-                    Console.WriteLine("ERROR");
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    try
+                    {
+                        ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
+                        string message = "";
+                        if (receiptInfo.status == 0)
+                        {
+                            message = "Ödeme başarılı!";
+                            clearBasket();
+                        }
+                        else
+                        {
+                            message = "Ödeme başarısız";
+                        }
+                        string caption = "Ödeme bilgisi alındı";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+
+                        // Displays the MessageBox.
+                        result = MessageBox.Show(message, caption, buttons);
+                        if (result == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            // Closes the parent form.
+                            this.Close();
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("ERROR");
+                    }
                 }
-            }
 
 
-            Console.WriteLine("");
-            Console.WriteLine("TokenDotNet serialInCallback type: " + type);
-            Console.WriteLine("");
-            Console.WriteLine("TokenDotNet serialInCallback value: " + storeValue);
-            Console.WriteLine("");
-            Console.WriteLine("TokenDotNet serialInCallback basket: " + constructJsonFromBasket(basket));
-            Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("TokenDotNet serialInCallback type: " + type);
+                Console.WriteLine("");
+                Console.WriteLine("TokenDotNet serialInCallback value: " + storeValue);
+                Console.WriteLine("");
+                Console.WriteLine("TokenDotNet serialInCallback basket: " + constructJsonFromBasket(basket));
+                Console.WriteLine("");
+
+
+            });
 
         }
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
+            Task.Run(() => {
+                string idcpy = string.Copy(id);
+                Console.WriteLine("TokenDotNet deviceStateCallback isConnected: " + isConnected);
+                Console.WriteLine("TokenDotNet deviceStateCallback fiscalId: " + id);
 
-            string idcpy = string.Copy(id);
-            Console.WriteLine("TokenDotNet deviceStateCallback isConnected: " + isConnected);
-            Console.WriteLine("TokenDotNet deviceStateCallback fiscalId: " + id);
+                if (isConnected)
+                {
+                    tbAvInfo.Text = idcpy;
+                    isDeviceConnceted = true;
+                }
+                else
+                {
+                    isDeviceConnceted = false;
+                    Task.Run(() => {
+                        if (tbAvInfo.InvokeRequired) { tbAvInfo.Invoke((MethodInvoker)(() => tbAvInfo.Text = "Bağlı cihaz yok!")); }
+                        else tbAvInfo.Text = "Bağlı cihaz yok!";
+                        Console.WriteLine("Items Freed1");
+                    });
+                    Task.Run(() => {
+                        if (lbFiscal.InvokeRequired) { lbFiscal.Invoke((MethodInvoker)(() => lbFiscal.Items.Clear())); }
+                        else lbFiscal.Items.Clear();
+                        Console.WriteLine("Items Freed2");
+                    });
+                    Task.Run(() => {
+                        if (lbSavedItems.InvokeRequired) { lbSavedItems.Invoke((MethodInvoker)(() => lbSavedItems.Items.Clear())); }
+                        else lbSavedItems.Items.Clear();
+                        Console.WriteLine("Items Freed3");
+                    });
+                    Console.WriteLine("Items Freed4");
+                }
+            });
 
-            Control.CheckForIllegalCrossThreadCalls = false;
-            if (isConnected)
-            {
-                tbAvInfo.Text = idcpy;
-                isDeviceConnceted = true;
-            }
-            else
-            {
-                isDeviceConnceted = false;
-                Task.Run(() => {
-                    if (tbAvInfo.InvokeRequired) { tbAvInfo.Invoke((MethodInvoker)(() => tbAvInfo.Text = "Bağlı cihaz yok!")); }
-                    else tbAvInfo.Text = "Bağlı cihaz yok!";
-                    Console.WriteLine("Items Freed1");
-                });
-                Task.Run(() => {
-                    if (lbFiscal.InvokeRequired) { lbFiscal.Invoke((MethodInvoker)(() => lbFiscal.Items.Clear())); }
-                    else lbFiscal.Items.Clear();
-                    Console.WriteLine("Items Freed2");
-                });
-                Task.Run(() => {
-                    if (lbSavedItems.InvokeRequired) { lbSavedItems.Invoke((MethodInvoker)(() => lbSavedItems.Items.Clear())); }
-                    else lbSavedItems.Items.Clear();
-                    Console.WriteLine("Items Freed3");
-                });
-                Console.WriteLine("Items Freed4");
-            }
         }
 
         private FiscalInfo constructFiscalInfoFromJson(string json)
@@ -1056,8 +1061,7 @@ namespace TokenDotNet
             int activeDeviceIndex = communication.getActiveDeviceIndex();
             if (activeDeviceIndex == 1)
             {
-                basket.isVoid = true;
-                sendBasketWithPopup();
+                communication.sendPayment("{\"isVoid\": true}");
             } 
             else
             {
