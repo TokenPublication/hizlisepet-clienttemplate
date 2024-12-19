@@ -118,19 +118,15 @@ namespace TokenDotNet
                     Task.Run(() => {
                         if (tbAvInfo.InvokeRequired) { tbAvInfo.Invoke((MethodInvoker)(() => tbAvInfo.Text = "Bağlı cihaz yok!")); }
                         else tbAvInfo.Text = "Bağlı cihaz yok!";
-                        Console.WriteLine("Items Freed1");
                     });
                     Task.Run(() => {
                         if (lbFiscal.InvokeRequired) { lbFiscal.Invoke((MethodInvoker)(() => lbFiscal.Items.Clear())); }
                         else lbFiscal.Items.Clear();
-                        Console.WriteLine("Items Freed2");
                     });
                     Task.Run(() => {
                         if (lbSavedItems.InvokeRequired) { lbSavedItems.Invoke((MethodInvoker)(() => lbSavedItems.Items.Clear())); }
                         else lbSavedItems.Items.Clear();
-                        Console.WriteLine("Items Freed3");
                     });
-                    Console.WriteLine("Items Freed4");
                 }
             });
 
@@ -403,6 +399,7 @@ namespace TokenDotNet
 
             if (fiscalInfo == null || fiscalInfo == "") {
                 Console.WriteLine("FISCAL INFO IS NULL");
+                return;
             }
 
             updateConsole(fiscalInfo);
@@ -836,8 +833,6 @@ namespace TokenDotNet
                     description = "NAKIT",
                     type = 1
                 });
-                Console.WriteLine("Örnek satış");
-                Console.WriteLine(constructJsonFromBasket(basket));
                 updateConsole(constructJsonFromBasket(basket));
                 updateBasketView();
                 sendBasketWithPopup();
