@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace TokenDotNet
 {
@@ -341,6 +342,7 @@ namespace TokenDotNet
                 }
             }
         }
+
         private Item castPlusToItem(Plus plus)
         {
             return (new Item
@@ -366,10 +368,21 @@ namespace TokenDotNet
             communication.setSerialInCallback(serialInCallback);
         }
 
+        private string getDllVersion()
+        {
+            string dllName = "IntegrationHub";
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                AssemblyName assemblyName = assembly.GetName();
+                if (assemblyName.Name == dllName)
+                    return assemblyName.Version.ToString();
+            }
+
+            return null;
+        }
+
         public MainForm()
         {
-            InitializeComponent();
-
             Thread thread = new Thread(setUpCallbacks);
             thread.Start();
 
@@ -379,18 +392,12 @@ namespace TokenDotNet
             basket.documentType = 0;
             basket.isVoid = false;
 
-            lbVersion.Text = Program.version;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
- 
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            InitializeComponent();
+            exSaleSelector.SelectedIndex = 0;
+            lbVersion.Text = $"APP Version = {Assembly.GetExecutingAssembly().GetName().Version}";
+            string dllVersion = getDllVersion();
+            if (dllVersion != null)
+                lbDllVersion.Text = $"DLL Version = {dllVersion}";
         }
 
         private void getFiscalInfo()
@@ -452,25 +459,17 @@ namespace TokenDotNet
             sendBasketWithPopup();
         }
 
-        private void sendCash_Click(object sender, EventArgs e)
+        private void sendPayment(int type, string description = null)
         {
             if (basket.paymentItems.Count != 0)
             {
-                {
-                    // Initializes the variables to pass to the MessageBox.Show method.
-                    string message = "Ödeme planı varken sepet gönder butonunu kullanınız!";
-                    string caption = "Sepet Gönderilemedi";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
-
-                    // Displays the MessageBox.
-                    result = MessageBox.Show(message, caption, buttons);
-                    if (result == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        // Closes the parent form.
-                        this.Close();
-                    }
-                }
+                string message = "Ödeme planı varken sepet gönder butonunu kullanınız!";
+                string caption = "Sepet Gönderilemedi";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+                
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                    this.Close();
             }
             else
             {
@@ -480,7 +479,8 @@ namespace TokenDotNet
                     string json = constructJsonFromPayment(new PaymentItem
                     {
                         amount = amount,
-                        type = 1
+                        description = description,
+                        type = type,
                     });
                     communication.sendPayment(json);
                 }
@@ -489,9 +489,10 @@ namespace TokenDotNet
                     basket.paymentItems.Add(new PaymentItem
                     {
                         amount = basket.calculatePrice(),
-                        type = 1
+                        description = description,
+                        type = type,
                     });
-                
+
                     updateConsole(constructJsonFromBasket(basket));
                     updateBasketView();
 
@@ -500,54 +501,19 @@ namespace TokenDotNet
             }
         }
 
+        private void sendCash_Click(object sender, EventArgs e)
+        {
+            sendPayment(1, "NAKIT");
+        }
+
         private void sendCard_Click(object sender, EventArgs e)
         {
-            if (basket.paymentItems.Count != 0)
-            {
-                {
-                    // Initializes the variables to pass to the MessageBox.Show method.
-                    string message = "Ödeme planı varken sepet gönder butonunu kullanınız!";
-                    string caption = "Sepet Gönderilemedi";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
+            sendPayment(3, "KREDI KARTI");
+        }
 
-                    // Displays the MessageBox.
-                    result = MessageBox.Show(message, caption, buttons);
-                    if (result == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        // Closes the parent form.
-                        this.Close();
-                    }
-                }
-            }
-            else
-            {
-                if (communication.getActiveDeviceIndex() == 1)
-                {
-                    int amount = displayPriceToRealPrice(tbItemPrice.Text);
-                    string json = constructJsonFromPayment(new PaymentItem
-                    {
-                        amount = amount,
-                        description = "KART",
-                        type = 3
-                    });
-                    communication.sendPayment(json);
-                }
-                else
-                {
-                    basket.paymentItems.Add(new PaymentItem
-                    {
-                        amount = basket.calculatePrice(),
-                        description = "KART",
-                        type = 3
-                    });
-
-                    updateConsole(constructJsonFromBasket(basket));
-                    updateBasketView();
-
-                    sendBasketWithPopup();
-                }
-            }
+        private void sendFoodCard_Click(object sender, EventArgs e)
+        {
+            sendPayment(7, "YEMEK KARTI");
         }
 
         private void addCustomer_Click(object sender, EventArgs e)
@@ -801,11 +767,6 @@ namespace TokenDotNet
 
         }
 
-        private void lbPrice_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void exSale_Click(object sender, EventArgs e)
         {
 
@@ -961,6 +922,7 @@ namespace TokenDotNet
 
             selector.SelectedIndex = 0;
         }
+
         private void disconnect_communication(object sender, EventArgs e)
         {
             try
@@ -986,7 +948,6 @@ namespace TokenDotNet
                 Console.WriteLine(ex.Message);
             }
         }
-
 
         private void handleSendJsonButton(object sender, EventArgs e)
         {
@@ -1085,20 +1046,6 @@ namespace TokenDotNet
         private void handleRemoveNote(object sender, EventArgs e) 
         {
             basket.note = null;
-        }
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbVersion_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void staticlb2_Click(object sender, EventArgs e)
-        {
-
         }
     }
 

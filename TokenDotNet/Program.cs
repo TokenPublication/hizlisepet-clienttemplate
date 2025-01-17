@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IntegrationHub;
@@ -13,9 +14,6 @@ namespace TokenDotNet
         /// The main entry point for the application.
         /// </summary>
         /// 
-        public static string version = "Version = 2.2.1";
-        
-        
         public static IntegrationHub.POSCommunication communication = IntegrationHub.POSCommunication.getInstance("TOKEN FINTECH");
 
         [STAThread]
