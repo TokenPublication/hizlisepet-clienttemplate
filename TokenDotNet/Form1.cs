@@ -112,6 +112,10 @@ namespace TokenDotNet
                 {
                     tbAvInfo.Text = idcpy;
                     isDeviceConnceted = true;
+
+                    Thread thread = new Thread(getFiscalInfo);
+                    thread.Start();
+
                 }
                 else
                 {
@@ -405,7 +409,7 @@ namespace TokenDotNet
             string fiscalInfo = communication.getFiscalInfo();
 
             if (fiscalInfo == null || fiscalInfo == "") {
-                Console.WriteLine("FISCAL INFO IS NULL");
+                Console.WriteLine("TokenDotNet FISCAL INFO IS NULL");
                 return;
             }
 
@@ -438,6 +442,7 @@ namespace TokenDotNet
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("TokenDotNet get fiscalInfo onBtnClick" );
             if (!isDeviceConnceted)
             {
                 string message = "POS cihazı bağlayıp tekrar deneyiniz.";
@@ -1040,7 +1045,7 @@ namespace TokenDotNet
                 {
                     basket.note = addNoteForm.UserInput;
                 }
-            }  
+            } 
         }
 
         private void handleRemoveNote(object sender, EventArgs e) 
