@@ -112,10 +112,6 @@ namespace TokenDotNet
                 {
                     tbAvInfo.Text = idcpy;
                     isDeviceConnceted = true;
-
-                    Thread thread = new Thread(getFiscalInfo);
-                    thread.Start();
-
                 }
                 else
                 {
