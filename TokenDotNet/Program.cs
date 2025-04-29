@@ -31,6 +31,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IntegrationHub;
@@ -47,18 +48,6 @@ namespace TokenDotNet
         /// The main entry point for the application.
         /// </summary>
         /// 
-        /// <summary>
-        /// Current version of the application.
-        /// Used for tracking compatibility and feature sets.
-        /// </summary>
-        public static string version = "Version = 2.1.0";
-        
-        
-        /// <summary>
-        /// Singleton instance of the POS communication interface.
-        /// Handles all protocol-specific interactions with the payment terminal.
-        /// The "TOKEN FINTECH" parameter identifies this client to the integration hub.
-        /// </summary>
         public static IntegrationHub.POSCommunication communication = IntegrationHub.POSCommunication.getInstance("TOKEN FINTECH");
 
         /// <summary>
