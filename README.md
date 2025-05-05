@@ -4,6 +4,18 @@
 
 HizliSepet Client Template is a .NET application that serves as a client interface for integrating with Point of Sale (POS) devices through the "TokenX Connect (Wired)" or "Integration Hub" middleware. This application facilitates seamless communication between retail/business software and physical POS terminals.
 
+## Versions
+
+**v2.5.0.1**
+- Bug fix on fetching sections and products info from device.
+- Bug fix on message queue command order.
+- Bug fix on connection loss.
+- Reduced the logs and logs file size.
+- When device is not connedted to cradle, sendBasket and sendPayment returns failure. (300TR)
+- Improved connection stability.
+- Huge decrease in cpu usage.
+
+
 ## Key Features
 
 1. **POS Device Communication**: Establishes and maintains connections with POS hardware devices via the Integration Hub.
