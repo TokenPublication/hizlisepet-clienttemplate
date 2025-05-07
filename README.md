@@ -15,6 +15,7 @@ HizliSepet Client Template is a .NET application that serves as a client interfa
 - Improved connection stability.
 - Huge decrease in cpu usage.
 
+## NOTE: You have to call getFiscalInfo() api every time DeviceStateCallback returns isConnected true.
 
 ## Key Features
 
