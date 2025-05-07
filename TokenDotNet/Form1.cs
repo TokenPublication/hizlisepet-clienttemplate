@@ -20,74 +20,122 @@ using System.Reflection;
 
 namespace TokenDotNet
 {
+    /// <summary>
+    /// MainForm: The primary UI form for the TokenDotNet application.
+    /// 
+    /// Overview:
+    /// This application serves as a client interface for integrating with POS (Point of Sale) devices
+    /// through the "TokenX Connect (Wired)" or "Integration Hub" middleware.
+    /// 
+    /// Main Features:
+    /// 1. POS Device Communication: Connects to POS hardware devices via Integration Hub
+    /// 2. Basket Management: Creates, modifies, and submits shopping baskets to POS devices
+    /// 3. Payment Processing: Handles various payment methods (cash, card)
+    /// 4. Fiscal Information: Retrieves and displays fiscal data from connected POS devices
+    /// 5. Advanced Operations: Supports special transactions like advances, invoice payments, etc.
+    /// 
+    /// Architecture:
+    /// - Uses a callback-based approach for async communication with POS devices
+    /// - Serializes/deserializes data using JSON for cross-platform compatibility
+    /// - Implements a rich UI for basket and payment management
+    /// </summary>
     public partial class MainForm : Form
     {
-
+        /// <summary>
+        /// The current shopping basket being constructed/modified
+        /// Contains items, payment info, customer details, etc.
+        /// </summary>
         private Basket basket;
+        
+        /// <summary>
+        /// Reference to the POS communication interface
+        /// This is the main integration point with the POS hardware
+        /// </summary>
         private IntegrationHub.POSCommunication communication = Program.communication;
+        
+        /// <summary>
+        /// Flag indicating whether a POS device is currently connected
+        /// </summary>
         private bool isDeviceConnceted = false;
 
+        /// <summary>
+        /// Callback method for handling serial data received from POS device
+        /// 
+        /// This method is invoked by the Integration Hub when data is received from the POS device.
+        /// It processes various types of messages based on the 'type' parameter:
+        /// - Type 3: Sale information (payment results)
+        /// - Type 9: Basket processing errors
+        /// 
+        /// @param type The message type identifier
+        /// @param value The message payload as a JSON string
+        /// </summary>
         public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
         {
             Task.Run(() => {
-
+                // Create a deep copy of the value to avoid any potential threading issues
                 string storeValue = string.Copy(value);
 
+                // Display the received data in the console UI
                 updateConsole(storeValue);
 
-                //BASKET PROCESS ERROR
+                // Process different message types from the POS device
+                
+                // Handle basket processing errors (Type 9)
                 if (type == 9)
                 {
+                    // Display error message about basket processing failure
                     string message = "Sepet POS tarafından işlenemedi lütfen POS uygulamasının açık olduğuna emin olup tekrar deneyiniz!";
                     string caption = "Sepet İşlenemedi";
                     MessageBoxButtons buttons = MessageBoxButtons.OK;
                     DialogResult result;
 
-                    // Displays the MessageBox.
+                    // Show error dialog to user
                     result = MessageBox.Show(message, caption, buttons);
                     if (result == System.Windows.Forms.DialogResult.Yes)
                     {
-                        // Closes the parent form.
+                        // Close application if user clicks Yes
                         this.Close();
                     }
                 }
 
-                //SALE INFORMATION
+                // Handle sale information responses (Type 3)
                 if (type == 3)
                 {
-                    // Initializes the variables to pass to the MessageBox.Show method.
-                    try
-                    {
+                    try {
+                        // Parse receipt information from JSON response
                         ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
                         string message = "";
+                        
+                        // Check payment status
                         if (receiptInfo.status == 0)
                         {
+                            // Payment was successful
                             message = "Ödeme başarılı!";
                             clearBasket();
                         }
                         else
                         {
+                            // Payment failed
                             message = "Ödeme başarısız";
                         }
+                        
+                        // Show payment status dialog
                         string caption = "Ödeme bilgisi alındı";
                         MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result;
-
-                        // Displays the MessageBox.
-                        result = MessageBox.Show(message, caption, buttons);
+                        DialogResult result = MessageBox.Show(message, caption, buttons);
                         if (result == System.Windows.Forms.DialogResult.Yes)
                         {
-                            // Closes the parent form.
                             this.Close();
                         }
                     }
                     catch
                     {
+                        // Log error if receipt information cannot be parsed
                         Console.WriteLine("ERROR");
                     }
                 }
 
-
+                // Log detailed information for debugging purposes
                 Console.WriteLine("");
                 Console.WriteLine("TokenDotNet serialInCallback type: " + type);
                 Console.WriteLine("");
@@ -95,10 +143,7 @@ namespace TokenDotNet
                 Console.WriteLine("");
                 Console.WriteLine("TokenDotNet serialInCallback basket: " + constructJsonFromBasket(basket));
                 Console.WriteLine("");
-
-
             });
-
         }
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
@@ -812,7 +857,7 @@ namespace TokenDotNet
 
                 // Displays the MessageBox.
                 result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
                     // Closes the parent form.
                     this.Close();
