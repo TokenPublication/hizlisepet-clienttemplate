@@ -11,12 +11,12 @@
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\receiptinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\receiptinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\tokendotnet\\receiptinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F73CC7DC-F50E-4697-B62A-6A391706787F}|TokenDotNet\\TokenDotNet.csproj|solutionrelative:tokendotnet\\receiptinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 20,
+          "SelectedChildIndex": 21,
           "Children": [
             {
               "$type": "Bookmark",
@@ -105,8 +105,12 @@
               "Name": "ST:129:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ReceiptInfo.cs",
               "DocumentMoniker": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\ReceiptInfo.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\ReceiptInfo.cs",
@@ -124,21 +128,22 @@
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
               "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeToolTip": "TokenDotNet\\Form1.cs",
-              "ViewState": "AgIAAKQAAAAAAAAAAAAAwLAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAQwHQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-14T06:16:31.58Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Form1.cs [Tasar\u0131m]",
               "DocumentMoniker": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs",
               "RelativeDocumentMoniker": "TokenDotNet\\Form1.cs",
               "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Form1.cs [Tasar\u0131m]",
               "RelativeToolTip": "TokenDotNet\\Form1.cs [Tasar\u0131m]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-14T06:16:29.767Z"
+              "WhenOpened": "2025-04-14T06:16:29.767Z",
+              "EditorCaption": " [Tasar\u0131m]"
             },
             {
               "$type": "Document",
@@ -148,9 +153,10 @@
               "RelativeDocumentMoniker": "TokenDotNet\\Program.cs",
               "ToolTip": "C:\\Users\\Samsung\\source\\repos\\hizlisepet-clienttemplate\\TokenDotNet\\Program.cs",
               "RelativeToolTip": "TokenDotNet\\Program.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAIwBkAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T08:22:40.14Z"
+              "WhenOpened": "2025-02-10T08:22:40.14Z",
+              "EditorCaption": ""
             }
           ]
         }
