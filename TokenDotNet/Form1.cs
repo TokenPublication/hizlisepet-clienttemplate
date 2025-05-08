@@ -1183,7 +1183,7 @@ namespace TokenDotNet
                 Location = new System.Drawing.Point(120, 300),
                 DialogResult = DialogResult.OK,
             };
-            sendPaymentButton.Click += (s, e) => { UserInput = inputTextBox.Text; };
+            sendPaymentButton.Click += (s, e) => { UserInput = inputTextBox.Text.Replace("\r",""); };
             this.Controls.Add(sendPaymentButton);
 
 
