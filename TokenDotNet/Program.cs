@@ -63,6 +63,8 @@ namespace TokenDotNet
             // Configure text rendering for compatibility
             Application.SetCompatibleTextRenderingDefault(false);
 
+            Control.CheckForIllegalCrossThreadCalls = false;
+
             // Create and run the main application form
             Application.Run(new MainForm());
         }
