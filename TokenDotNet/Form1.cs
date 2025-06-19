@@ -56,7 +56,7 @@ namespace TokenDotNet
         /// <summary>
         /// Flag indicating whether a POS device is currently connected
         /// </summary>
-        private bool isDeviceConnceted = false;
+        private bool isDeviceConnected = false;
 
         /// <summary>
         /// Callback method for handling serial data received from POS device
@@ -69,113 +69,82 @@ namespace TokenDotNet
         /// @param type The message type identifier
         /// @param value The message payload as a JSON string
         /// </summary>
-        public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)]  string value)
+        public void serialInCallback(int type, [MarshalAs(UnmanagedType.BStr)] string value)
         {
-            Task.Run(() => {
-                // Create a deep copy of the value to avoid any potential threading issues
+            Task.Run(() =>
+            {
                 string storeValue = string.Copy(value);
-
-                // Display the received data in the console UI
                 updateConsole(storeValue);
 
-                // Process different message types from the POS device
-                
-                // Handle basket processing errors (Type 9)
                 if (type == 9)
                 {
-                    // Display error message about basket processing failure
-                    string message = "Sepet POS tarafından işlenemedi lütfen POS uygulamasının açık olduğuna emin olup tekrar deneyiniz!";
-                    string caption = "Sepet İşlenemedi";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
-
-                    // Show error dialog to user
-                    result = MessageBox.Show(message, caption, buttons);
-                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    this.Invoke(new Action(() =>
                     {
-                        // Close application if user clicks Yes
-                        this.Close();
-                    }
+                        string message = "Sepet POS tarafından işlenemedi lütfen POS uygulamasının açık olduğuna emin olup tekrar deneyiniz!";
+                        string caption = "Sepet İşlenemedi";
+                        MessageBox.Show(message, caption, MessageBoxButtons.OK);
+                    }));
                 }
 
-                // Handle sale information responses (Type 3)
                 if (type == 3)
                 {
-                    try {
-                        // Parse receipt information from JSON response
+                    try
+                    {
                         ReceiptInfo receiptInfo = constructReceiptInfoFromJson(storeValue);
                         string message = "";
-                        
-                        // Check payment status
+
                         if (receiptInfo.status == 0)
                         {
-                            // Payment was successful
                             message = "Ödeme başarılı!";
                             clearBasket();
                         }
                         else
                         {
-                            // Payment failed
                             message = "Ödeme başarısız";
                         }
-                        
-                        // Show payment status dialog
-                        string caption = "Ödeme bilgisi alındı";
-                        MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result = MessageBox.Show(message, caption, buttons);
-                        if (result == System.Windows.Forms.DialogResult.Yes)
+
+                        this.Invoke(new Action(() =>
                         {
-                            this.Close();
-                        }
+                            string caption = "Ödeme bilgisi alındı";
+                            MessageBox.Show(message, caption, MessageBoxButtons.OK);
+                        }));
                     }
                     catch
                     {
-                        // Log error if receipt information cannot be parsed
                         Console.WriteLine("ERROR");
                     }
                 }
 
-                // Log detailed information for debugging purposes
-                Console.WriteLine("");
-                Console.WriteLine("TokenDotNet serialInCallback type: " + type);
-                Console.WriteLine("");
-                Console.WriteLine("TokenDotNet serialInCallback value: " + storeValue);
-                Console.WriteLine("");
-                Console.WriteLine("TokenDotNet serialInCallback basket: " + constructJsonFromBasket(basket));
-                Console.WriteLine("");
+                Console.WriteLine($"\nTokenDotNet serialInCallback type: {type}\n");
+                Console.WriteLine($"TokenDotNet serialInCallback value: {storeValue}\n");
+                Console.WriteLine($"TokenDotNet serialInCallback basket: {constructJsonFromBasket(basket)}\n");
             });
         }
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 string idcpy = string.Copy(id);
-                Console.WriteLine("TokenDotNet deviceStateCallback isConnected: " + isConnected);
-                Console.WriteLine("TokenDotNet deviceStateCallback fiscalId: " + id);
+                Console.WriteLine($"TokenDotNet deviceStateCallback isConnected: {isConnected}");
+                Console.WriteLine($"TokenDotNet deviceStateCallback fiscalId: {id}");
+
+                isDeviceConnected = isConnected;
 
                 if (isConnected)
                 {
-                    tbAvInfo.Text = idcpy;
-                    isDeviceConnceted = true;
+                    this.Invoke(new Action(() => tbAvInfo.Text = idcpy));
                     Thread thread = new Thread(getFiscalInfo);
                     thread.Start();
-
                 }
                 else
                 {
-                    isDeviceConnceted = false;
-                    Task.Run(() => {
-                        if (tbAvInfo.InvokeRequired) { tbAvInfo.Invoke((MethodInvoker)(() => tbAvInfo.Text = "Bağlı cihaz yok!")); }
-                        else tbAvInfo.Text = "Bağlı cihaz yok!";
-                    });
-                    Task.Run(() => {
-                        if (lbFiscal.InvokeRequired) { lbFiscal.Invoke((MethodInvoker)(() => lbFiscal.Items.Clear())); }
-                        else lbFiscal.Items.Clear();
-                    });
-                    Task.Run(() => {
-                        if (lbSavedItems.InvokeRequired) { lbSavedItems.Invoke((MethodInvoker)(() => lbSavedItems.Items.Clear())); }
-                        else lbSavedItems.Items.Clear();
-                    });
+                    this.Invoke(new Action(() =>
+                    {
+                        tbAvInfo.Text = "Bağlı cihaz yok!";
+                        lbFiscal.Items.Clear();
+                        lbSavedItems.Items.Clear();
+                    }));
                 }
             });
 
@@ -206,7 +175,14 @@ namespace TokenDotNet
 
         private void updateConsole(string text)
         {
-            tbConsole.Text = text;
+            if (tbConsole.InvokeRequired)
+            {
+                tbConsole.Invoke(new Action(() => tbConsole.Text = text));
+            }
+            else
+            {
+                tbConsole.Text = text;
+            }
         }
 
         private void updateBasketView()
@@ -225,15 +201,27 @@ namespace TokenDotNet
 
         private void clearBasket()
         {
-            basket = new Basket();
-            updateConsole(constructJsonFromBasket(basket));
-            updateBasketView();
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    basket = new Basket();
+                    updateConsole(constructJsonFromBasket(basket));
+                    updateBasketView();
+                }));
+            }
+            else
+            {
+                basket = new Basket();
+                updateConsole(constructJsonFromBasket(basket));
+                updateBasketView();
+            }
         }
 
         private void sendBasketWithPopup()
         {
             //IF DEVICE IS NOT CONNECTED
-            if (!isDeviceConnceted)
+            if (!isDeviceConnected)
             {
                 // Initializes the variables to pass to the MessageBox.Show method.
                 string message = "POS cihazı bağlayıp tekrar deneyiniz.";
@@ -246,7 +234,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
                 return;
             }
@@ -266,7 +253,6 @@ namespace TokenDotNet
                     if (result == System.Windows.Forms.DialogResult.Yes)
                     {
                         // Closes the parent form.
-                        this.Close();
                     }
                 }
                 return;
@@ -287,7 +273,6 @@ namespace TokenDotNet
                     if (result == System.Windows.Forms.DialogResult.Yes)
                     {
                         // Closes the parent form.
-                        this.Close();
                     }
                 }
                 return;
@@ -308,7 +293,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
             }
 
@@ -326,7 +310,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
             }
         }
@@ -334,7 +317,7 @@ namespace TokenDotNet
         private void sendCustomBasket(Basket basket)
         {
             //IF DEVICE IS NOT CONNECTED
-            if (!isDeviceConnceted)
+            if (!isDeviceConnected)
             {
                 // Initializes the variables to pass to the MessageBox.Show method.
                 string message = "POS cihazı bağlayıp tekrar deneyiniz.";
@@ -347,7 +330,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
                 return;
             }
@@ -368,7 +350,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
             }
 
@@ -386,7 +367,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
             }
         }
@@ -452,48 +432,54 @@ namespace TokenDotNet
         {
             string fiscalInfo = communication.getFiscalInfo();
 
-            if (fiscalInfo == null || fiscalInfo == "") {
+            if (string.IsNullOrEmpty(fiscalInfo))
+            {
                 Console.WriteLine("TokenDotNet FISCAL INFO IS NULL");
                 return;
             }
 
             updateConsole(fiscalInfo);
 
-            lbFiscal.DisplayMember = "name";
-            lbSavedItems.DisplayMember = "name";
-
-            FiscalInfo fiscalinfoObj = constructFiscalInfoFromJson(fiscalInfo);
-
-            lbFiscal.Items.Clear();
-            lbSavedItems.Items.Clear();
-
-            if (fiscalinfoObj.sections != null)
+            this.Invoke(new Action(() =>
             {
-                foreach (Section section in fiscalinfoObj.sections)
-                {
-                    lbFiscal.Items.Add(section);
-                }
-            }
+                lbFiscal.DisplayMember = "name";
+                lbSavedItems.DisplayMember = "name";
 
-            if (fiscalinfoObj.plus != null)
-            {
-                foreach (Plus item in fiscalinfoObj.plus)
+                FiscalInfo fiscalinfoObj = constructFiscalInfoFromJson(fiscalInfo);
+
+                lbFiscal.Items.Clear();
+                lbSavedItems.Items.Clear();
+
+                if (fiscalinfoObj.sections != null)
                 {
-                    lbSavedItems.Items.Add(item);
+                    foreach (Section section in fiscalinfoObj.sections)
+                    {
+                        lbFiscal.Items.Add(section);
+                    }
                 }
-            }
+
+                if (fiscalinfoObj.plus != null)
+                {
+                    foreach (Plus item in fiscalinfoObj.plus)
+                    {
+                        lbSavedItems.Items.Add(item);
+                    }
+                }
+            }));
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             Console.WriteLine("TokenDotNet get fiscalInfo onBtnClick" );
-            if (!isDeviceConnceted)
+            if (!isDeviceConnected)
             {
                 string message = "POS cihazı bağlayıp tekrar deneyiniz.";
                 string caption = "Bağlı Cihaz Yok";
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result = MessageBox.Show(message, caption, buttons);
-                if (result == DialogResult.Yes) this.Close();
+                if (result == DialogResult.Yes)
+                {
+                }
 
                 return;
             }
@@ -705,7 +691,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
                 return;
             }   
@@ -725,7 +710,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
                 return;
             }
@@ -771,7 +755,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
             }
             return;
@@ -792,7 +775,6 @@ namespace TokenDotNet
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
                 return;
             }
@@ -860,7 +842,6 @@ namespace TokenDotNet
                 if (result == DialogResult.Yes)
                 {
                     // Closes the parent form.
-                    this.Close();
                 }
             }
         }
@@ -1006,7 +987,7 @@ namespace TokenDotNet
                 DialogResult result = popup.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
-                    if (!isDeviceConnceted)
+                    if (!isDeviceConnected)
                     {
                         string message = "POS cihazı bağlayıp tekrar deneyiniz.";
                         string caption = "Bağlı Cihaz Yok";
@@ -1050,7 +1031,7 @@ namespace TokenDotNet
 
         private void handleCancelReceipt(object sender, EventArgs e)
         {
-            if (!isDeviceConnceted)
+            if (!isDeviceConnected)
             {
                 string message = "POS cihazı bağlayıp tekrar deneyiniz.";
                 string caption = "Bağlı Cihaz Yok";
