@@ -58,7 +58,6 @@ C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Debug\TokenDotNet.exe.c
 C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Debug\TokenDotNet.exe
 C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Debug\TokenDotNet.pdb
 C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Debug\Newtonsoft.Json.dll
-C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Debug\IntegrationHub.pdb
 C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\bin\Debug\Newtonsoft.Json.xml
 C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Debug\TokenDotNet.csproj.AssemblyReference.cache
 C:\Users\25200399\projects\hizlisepetgui\TokenDotNet\obj\Debug\TokenDotNet.MainForm.resources
