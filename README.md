@@ -6,6 +6,9 @@ HizliSepet Client Template is a .NET application that serves as a client interfa
 
 ## Versions
 
+**v2.5.5.0**
+- Improved communication stability.
+
 **v2.5.0.1**
 - Bug fix on fetching sections and products info from device.
 - Bug fix on message queue command order.
