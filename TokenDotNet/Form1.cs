@@ -123,31 +123,42 @@ namespace TokenDotNet
 
         public void deviceStateCallback(bool isConnected, [MarshalAs(UnmanagedType.BStr)] string id)
         {
-            Task.Run(() =>
+            try
             {
-                string idcpy = string.Copy(id);
                 Console.WriteLine($"TokenDotNet deviceStateCallback isConnected: {isConnected}");
                 Console.WriteLine($"TokenDotNet deviceStateCallback fiscalId: {id}");
 
                 isDeviceConnected = isConnected;
 
-                if (isConnected)
+                if (_uiReady && _uiContext != null && !this.IsDisposed)
                 {
-                    this.Invoke(new Action(() => tbAvInfo.Text = idcpy));
-                    Thread thread = new Thread(getFiscalInfo);
-                    thread.Start();
+                    _uiContext.Post(_ =>
+                    {
+                        try
+                        {
+                            UpdateDeviceStateUi(isConnected, id);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("UI Post exception: " + ex);
+                        }
+                    }, null);
                 }
                 else
                 {
-                    this.Invoke(new Action(() =>
+                    // UI henüz hazır değilse state'i sakla
+                    lock (_pendingLock)
                     {
-                        tbAvInfo.Text = "Bağlı cihaz yok!";
-                        lbFiscal.Items.Clear();
-                        lbSavedItems.Items.Clear();
-                    }));
+                        _pendingIsConnected = isConnected;
+                        _pendingId = id;
+                        _hasPendingDeviceState = true;
+                    }
                 }
-            });
-
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("deviceStateCallback exception: " + ex);
+            }
         }
 
         private FiscalInfo constructFiscalInfoFromJson(string json)
@@ -414,6 +425,9 @@ namespace TokenDotNet
             Thread thread = new Thread(setUpCallbacks);
             thread.Start();
 
+            this.Shown += OnFormShown;
+            this.FormClosed += OnFormClosed;
+
             basket = new Basket();
             basket.basketID = "93ced0be-99f5-4e42-b0ca-bc781c778d69";
             basket.createInvoice = false;
@@ -426,6 +440,65 @@ namespace TokenDotNet
             string dllVersion = getDllVersion();
             if (dllVersion != null)
                 lbDllVersion.Text = $"DLL Version = {dllVersion}";
+        }
+
+        private SynchronizationContext _uiContext;
+        private bool _uiReady;
+
+        private readonly object _pendingLock = new object();
+        private bool _hasPendingDeviceState;
+        private bool _pendingIsConnected;
+        private string _pendingId;
+
+        private void OnFormShown(object sender, EventArgs e)
+        {
+            _uiContext = SynchronizationContext.Current;
+            _uiReady = true;
+
+            bool hasPending;
+            bool pendingIsConnected;
+            string pendingId;
+
+            lock (_pendingLock)
+            {
+                hasPending = _hasPendingDeviceState;
+                pendingIsConnected = _pendingIsConnected;
+                pendingId = _pendingId;
+
+                _hasPendingDeviceState = false;
+            }
+
+            if (!hasPending) return;
+
+            UpdateDeviceStateUi(pendingIsConnected, pendingId);
+        }
+
+        private void OnFormClosed(object sender, FormClosedEventArgs e)
+        {
+            _uiReady = false;
+            _uiContext = null;
+
+            _hasPendingDeviceState = false;
+        }
+
+
+        private void UpdateDeviceStateUi(bool isConnected, string id)
+        {
+
+            if (this.IsDisposed) return;
+
+            if (isConnected)
+            {
+                tbAvInfo.Text = id;
+                
+                Task.Run(getFiscalInfo);
+            }
+            else
+            {
+                tbAvInfo.Text = "Bağlı cihaz yok!";
+                lbFiscal.Items.Clear();
+                lbSavedItems.Items.Clear();
+            }
         }
 
         private void getFiscalInfo()
